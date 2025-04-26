@@ -124,11 +124,36 @@ Vercel has a size limit of 250 MB for Serverless Functions. If your application 
 
 ## Continuous Deployment
 
+### Vercel Git Integration
+
 Vercel automatically deploys your application when you push changes to your repository. To disable this:
 
 1. Go to your project settings in Vercel.
 2. Navigate to the "Git" tab.
 3. Configure the auto-deployment settings as needed.
+
+### GitHub Actions
+
+This repository includes GitHub Actions workflows for automated deployment to Vercel. To set up GitHub Actions:
+
+1. Get your Vercel deployment information by running the provided script:
+   ```bash
+   ./setup-vercel-secrets.sh
+   ```
+
+2. Add the following secrets to your GitHub repository:
+   - `VERCEL_TOKEN`: Your Vercel API token
+   - `VERCEL_PROJECT_ID`: Your Vercel project ID
+   - `VERCEL_ORG_ID`: Your Vercel organization/team ID
+
+3. The GitHub Actions workflow will automatically deploy your application to Vercel when you push to the main branch.
+
+#### Available Workflows
+
+- **vercel-deploy.yml**: Uses the Vercel CLI directly
+- **vercel-action-deploy.yml**: Uses the official Vercel GitHub Action
+
+You can enable or disable these workflows in the GitHub Actions settings of your repository.
 
 ## Additional Resources
 
