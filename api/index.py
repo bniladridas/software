@@ -3,7 +3,7 @@ import sys
 import logging
 import json
 import requests
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
 from dotenv import load_dotenv
 
 # Configure logging
@@ -13,9 +13,18 @@ logger = logging.getLogger(__name__)
 # Load environment variables
 load_dotenv()
 
+# Get the absolute path to the static folder
+static_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static')
+template_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates')
+
 app = Flask(__name__,
-            template_folder='../templates',  # Specify the template folder
-            static_folder='../static')       # Specify the static folder
+            template_folder=template_folder,  # Specify the template folder
+            static_folder=static_folder)       # Specify the static folder
+
+# Add explicit route for static files
+@app.route('/static/<path:path>')
+def serve_static(path):
+    return send_from_directory(static_folder, path)
 
 # Available models
 AVAILABLE_TEXT_MODELS = [
