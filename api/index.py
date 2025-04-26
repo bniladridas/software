@@ -17,14 +17,46 @@ load_dotenv()
 static_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static')
 template_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'templates')
 
+# Log folder paths for debugging
+logger.info(f"Static folder path: {static_folder}")
+logger.info(f"Template folder path: {template_folder}")
+
+# Check if we're running in Vercel environment
+is_vercel = os.environ.get('VERCEL') == '1'
+logger.info(f"Running in Vercel environment: {is_vercel}")
+
+# In Vercel, the file structure might be different
+if is_vercel:
+    # Try alternative paths for Vercel
+    alt_static_folder = os.path.join(os.getcwd(), 'static')
+    alt_template_folder = os.path.join(os.getcwd(), 'templates')
+
+    # Check if alternative paths exist
+    if os.path.exists(alt_static_folder):
+        logger.info(f"Using alternative static folder: {alt_static_folder}")
+        static_folder = alt_static_folder
+
+    if os.path.exists(alt_template_folder):
+        logger.info(f"Using alternative template folder: {alt_template_folder}")
+        template_folder = alt_template_folder
+
+# Initialize Flask app with template and static folders
 app = Flask(__name__,
-            template_folder=template_folder,  # Specify the template folder
-            static_folder=static_folder)       # Specify the static folder
+            template_folder=template_folder,
+            static_folder=static_folder)
 
 # Add explicit route for static files
 @app.route('/static/<path:path>')
 def serve_static(path):
     return send_from_directory(static_folder, path)
+
+# Add a route to serve the base.html template directly
+@app.route('/debug/base-html')
+def serve_base_html():
+    try:
+        return render_template('base.html')
+    except Exception as e:
+        return f"Error rendering base.html: {str(e)}"
 
 # Available models
 AVAILABLE_TEXT_MODELS = [
@@ -90,6 +122,27 @@ logger.info(f"API Key available: {bool(TOGETHER_API_KEY)}")
 # Add a debug route to check environment variables
 @app.route('/debug/env')
 def debug_env():
+    # Get template folder contents
+    template_files = []
+    if os.path.exists(template_folder):
+        template_files = os.listdir(template_folder)
+
+    # Get static folder contents
+    static_files = []
+    if os.path.exists(static_folder):
+        static_files = os.listdir(static_folder)
+
+    # Check if base.html exists
+    base_html_path = os.path.join(template_folder, 'base.html')
+    base_html_exists = os.path.exists(base_html_path)
+    base_html_content = None
+    if base_html_exists:
+        try:
+            with open(base_html_path, 'r') as f:
+                base_html_content = f.read()[:500] + "... (truncated)"
+        except Exception as e:
+            base_html_content = f"Error reading file: {str(e)}"
+
     env_vars = {
         "TOGETHER_API_KEY_SET": bool(TOGETHER_API_KEY),
         "API_KEY_SOURCES": {
@@ -108,6 +161,10 @@ def debug_env():
         "TEMPLATE_FOLDER": template_folder,
         "STATIC_FOLDER_EXISTS": os.path.exists(static_folder),
         "TEMPLATE_FOLDER_EXISTS": os.path.exists(template_folder),
+        "TEMPLATE_FILES": template_files,
+        "STATIC_FILES": static_files,
+        "BASE_HTML_EXISTS": base_html_exists,
+        "BASE_HTML_CONTENT": base_html_content,
         "CWD": os.getcwd(),
         "FILES_IN_CWD": os.listdir(os.getcwd()) if os.path.exists(os.getcwd()) else []
     }
@@ -181,26 +238,310 @@ def api_key_test():
 
 @app.route('/')
 def index():
+    # Check if we're in Vercel environment and if base.html exists
+    base_html_path = os.path.join(template_folder, 'base.html')
+    base_html_exists = os.path.exists(base_html_path)
+
+    # If we're in Vercel and base.html doesn't exist, use a modified template
+    if is_vercel and not base_html_exists:
+        logger.warning("Running in Vercel and base.html not found. Using inline template.")
+
+        # Create a simplified version of the page with hamburger menu directly included
+        html_content = """
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>AI Generation - Synthara AI</title>
+
+            <!-- Author and Description Meta Tags -->
+            <meta name="author" content="Niladri Das">
+            <meta name="description" content="Synthara AI: Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.">
+
+            <!-- Favicon -->
+            <link rel="icon" href="/static/images/favicon.ico">
+
+            <!-- CSS -->
+            <link rel="stylesheet" href="/static/css/styles.css">
+            <link rel="stylesheet" href="/static/css/mobile.css">
+
+            <!-- Font Awesome -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+            <style>
+                /* Critical mobile styles inline */
+                @media (max-width: 768px) {
+                    .hamburger-menu {
+                        display: block !important;
+                        position: absolute !important;
+                        top: 16px !important;
+                        right: 0 !important;
+                        z-index: 100 !important;
+                        background: none !important;
+                        border: none !important;
+                        cursor: pointer !important;
+                        padding: 8px !important;
+                        width: 44px !important;
+                        height: 44px !important;
+                    }
+
+                    .hamburger-icon {
+                        display: block;
+                        position: relative;
+                        width: 24px;
+                        height: 18px;
+                        margin: 0 auto;
+                    }
+
+                    .hamburger-icon span {
+                        display: block;
+                        position: absolute;
+                        height: 2px;
+                        width: 100%;
+                        background: #000;
+                        border-radius: 2px;
+                        opacity: 1;
+                        left: 0;
+                        transform: rotate(0deg);
+                        transition: .25s ease-in-out;
+                    }
+
+                    .hamburger-icon span:nth-child(1) {
+                        top: 0px;
+                    }
+
+                    .hamburger-icon span:nth-child(2) {
+                        top: 8px;
+                    }
+
+                    .hamburger-icon span:nth-child(3) {
+                        top: 16px;
+                    }
+
+                    header {
+                        position: relative !important;
+                        padding-top: 16px !important;
+                    }
+
+                    .nav-links {
+                        display: none;
+                        width: 100%;
+                    }
+
+                    .nav-links.open {
+                        display: flex;
+                        flex-direction: column;
+                        position: absolute;
+                        top: 70px;
+                        left: 0;
+                        right: 0;
+                        background: #fff;
+                        padding: 24px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        z-index: 99;
+                        border-radius: 2px;
+                        border: 1px solid rgba(0, 0, 0, 0.05);
+                    }
+
+                    .nav-link {
+                        padding: 16px 0;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                        width: 100%;
+                        text-align: center;
+                        font-size: 1rem;
+                    }
+
+                    .nav-link:last-child {
+                        border-bottom: none;
+                    }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="app-container">
+                <header>
+                    <div class="logo">
+                        <img src="/static/images/logo.png" alt="Synthara AI Logo" class="header-logo">
+                        <h1>AI Generation</h1>
+                    </div>
+
+                    <!-- Static hamburger menu button with inline styles -->
+                    <button class="hamburger-menu" aria-label="Toggle navigation menu">
+                        <div class="hamburger-icon">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
+
+                    <div class="nav-links">
+                        <a href="/" class="nav-link">Home</a>
+                        <a href="/resources" class="nav-link">About Our Models</a>
+                        <a href="/synthara" class="nav-link">About Synthara AI</a>
+                        <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
+                        <a href="/api-key" class="nav-link">API Key Setup</a>
+                    </div>
+                </header>
+
+                <main>
+                    <div class="combined-interface">
+                        <!-- Text Generation Section -->
+                        <div class="section">
+                            <div class="input-section">
+                                <h2>Text</h2>
+                                <div class="form-group">
+                                    <label for="text-model">Model</label>
+                                    <select id="text-model">
+                                        <option value="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free">Llama-3.3-70B</option>
+                                        <option value="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free">DeepSeek-R1-70B</option>
+                                        <option value="meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8">Llama-4-Maverick-17B (API Key Required)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="text-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
+                                    <textarea id="text-prompt" rows="4" placeholder="Type here..."></textarea>
+                                </div>
+                                <button id="generate-text-btn" class="primary-btn">
+                                    <span>Generate</span>
+                                </button>
+                            </div>
+                            <div class="output-section">
+                                <div class="output-header">
+                                    <h3>Output</h3>
+                                    <div>
+                                        <button id="copy-text-btn" class="icon-btn" title="Copy">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div id="text-output" class="output-content">
+                                    <p class="placeholder">Output will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Image Generation Section -->
+                        <div class="section">
+                            <div class="input-section">
+                                <h2>Image</h2>
+                                <div class="form-group">
+                                    <label for="image-model">Model</label>
+                                    <select id="image-model">
+                                        <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="image-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
+                                    <textarea id="image-prompt" rows="4" placeholder="Type here..."></textarea>
+                                </div>
+                                <button id="generate-image-btn" class="primary-btn">
+                                    <span>Generate</span>
+                                </button>
+                            </div>
+                            <div class="output-section">
+                                <div class="output-header">
+                                    <h3>Output</h3>
+                                </div>
+                                <div id="image-output" class="output-content image-grid">
+                                    <p class="placeholder">Output will appear here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <footer>
+                    <p>&copy; 2024 Synthara AI. All rights reserved.</p>
+                </footer>
+            </div>
+
+            <!-- Inline script for critical mobile functionality -->
+            <script>
+                // Ensure hamburger menu works even if external scripts fail to load
+                document.addEventListener('DOMContentLoaded', function() {
+                    const hamburgerBtn = document.querySelector('.hamburger-menu');
+                    const navLinks = document.querySelector('.nav-links');
+
+                    if (hamburgerBtn && navLinks) {
+                        hamburgerBtn.addEventListener('click', function() {
+                            this.classList.toggle('open');
+                            navLinks.classList.toggle('open');
+                        });
+                    }
+                });
+            </script>
+
+            <!-- Core Scripts -->
+            <script src="/static/js/main.js"></script>
+            <script src="/static/js/notifications.js"></script>
+            <script src="/static/js/mobile.js"></script>
+        </body>
+        </html>
+        """
+        return html_content
+
+    # Normal rendering with template
     return render_template('index.html')
 
 @app.route('/resources')
 def resources():
+    # Check if we're in Vercel environment and if base.html exists
+    base_html_path = os.path.join(template_folder, 'base.html')
+    base_html_exists = os.path.exists(base_html_path)
+
+    # If we're in Vercel and base.html doesn't exist, redirect to home with a query parameter
+    if is_vercel and not base_html_exists:
+        return redirect('/?page=resources')
+
     return render_template('resources.html')
 
 @app.route('/synthara')
 def synthara():
+    # Check if we're in Vercel environment and if base.html exists
+    base_html_path = os.path.join(template_folder, 'base.html')
+    base_html_exists = os.path.exists(base_html_path)
+
+    # If we're in Vercel and base.html doesn't exist, redirect to home with a query parameter
+    if is_vercel and not base_html_exists:
+        return redirect('/?page=synthara')
+
     return render_template('synthara.html')
 
 @app.route('/deployment-protection')
 def deployment_protection():
+    # Check if we're in Vercel environment and if base.html exists
+    base_html_path = os.path.join(template_folder, 'base.html')
+    base_html_exists = os.path.exists(base_html_path)
+
+    # If we're in Vercel and base.html doesn't exist, redirect to home with a query parameter
+    if is_vercel and not base_html_exists:
+        return redirect('/?page=deployment-protection')
+
     return render_template('deployment-protection.html')
 
 @app.route('/api-key')
 def api_key():
+    # Check if we're in Vercel environment and if base.html exists
+    base_html_path = os.path.join(template_folder, 'base.html')
+    base_html_exists = os.path.exists(base_html_path)
+
+    # If we're in Vercel and base.html doesn't exist, redirect to home with a query parameter
+    if is_vercel and not base_html_exists:
+        return redirect('/?page=api-key')
+
     return render_template('api-key.html')
 
 @app.route('/privacy-policy')
 def privacy_policy():
+    # Check if we're in Vercel environment and if base.html exists
+    base_html_path = os.path.join(template_folder, 'base.html')
+    base_html_exists = os.path.exists(base_html_path)
+
+    # If we're in Vercel and base.html doesn't exist, redirect to home with a query parameter
+    if is_vercel and not base_html_exists:
+        return redirect('/?page=privacy-policy')
+
     return render_template('privacy-policy.html')
 
 @app.route('/api/prompt-suggestions', methods=['GET'])
