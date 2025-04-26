@@ -37,25 +37,53 @@ AVAILABLE_IMAGE_MODELS = [
     {"id": "black-forest-labs/FLUX.1-dev", "name": "FLUX.1-dev"}
 ]
 
-# Get API key from environment - try multiple methods
-TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
-if not TOGETHER_API_KEY and "TOGETHER_API_KEY" in os.environ:
-    TOGETHER_API_KEY = os.environ["TOGETHER_API_KEY"]
+# Get API key from environment - try multiple methods with detailed logging
+logger.info("Attempting to load API key from environment variables")
+TOGETHER_API_KEY = None
+
+# Method 1: os.getenv
+api_key_from_getenv = os.getenv("TOGETHER_API_KEY")
+logger.info(f"API key from os.getenv: {'Found' if api_key_from_getenv else 'Not found'}")
+
+# Method 2: os.environ
+api_key_from_environ = os.environ.get("TOGETHER_API_KEY")
+logger.info(f"API key from os.environ: {'Found' if api_key_from_environ else 'Not found'}")
+
+# Method 3: Vercel specific environment variables
+# Sometimes Vercel uses different naming conventions
+api_key_from_vercel = os.environ.get("VERCEL_TOGETHER_API_KEY")
+logger.info(f"API key from VERCEL_TOGETHER_API_KEY: {'Found' if api_key_from_vercel else 'Not found'}")
 
 # Try loading from .env file directly if not found in environment
-if not TOGETHER_API_KEY:
-    try:
-        env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
-        if os.path.exists(env_path):
-            with open(env_path, 'r') as f:
-                for line in f:
-                    if line.strip() and not line.startswith('#'):
+api_key_from_file = None
+try:
+    env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+    logger.info(f"Checking for .env file at: {env_path}")
+    if os.path.exists(env_path):
+        logger.info(".env file found, attempting to read")
+        with open(env_path, 'r') as f:
+            for line in f:
+                if line.strip() and not line.startswith('#'):
+                    try:
                         key, value = line.strip().split('=', 1)
                         if key == "TOGETHER_API_KEY":
-                            TOGETHER_API_KEY = value
+                            api_key_from_file = value
+                            logger.info("API key found in .env file")
                             break
-    except Exception as e:
-        logger.error(f"Error loading API key from .env file: {e}")
+                    except ValueError:
+                        continue
+    else:
+        logger.info(".env file not found")
+except Exception as e:
+    logger.error(f"Error loading API key from .env file: {e}")
+
+# Use the first available API key
+TOGETHER_API_KEY = api_key_from_getenv or api_key_from_environ or api_key_from_vercel or api_key_from_file
+
+# Hardcoded API key as a last resort (for testing only)
+if not TOGETHER_API_KEY:
+    logger.warning("No API key found in environment variables or .env file. Using hardcoded key for testing.")
+    TOGETHER_API_KEY = "14d0c8d9b0e3569e437c5d5083f706215fd5b71f283dca2e6186b5823d6d2b35"
 
 logger.info(f"API Key available: {bool(TOGETHER_API_KEY)}")
 
@@ -64,21 +92,49 @@ logger.info(f"API Key available: {bool(TOGETHER_API_KEY)}")
 def debug_env():
     env_vars = {
         "TOGETHER_API_KEY_SET": bool(TOGETHER_API_KEY),
+        "API_KEY_SOURCES": {
+            "os.getenv": bool(api_key_from_getenv),
+            "os.environ": bool(api_key_from_environ),
+            "VERCEL_TOGETHER_API_KEY": bool(api_key_from_vercel),
+            "env_file": bool(api_key_from_file),
+            "hardcoded": bool(TOGETHER_API_KEY) and not any([api_key_from_getenv, api_key_from_environ, api_key_from_vercel, api_key_from_file])
+        },
         "PYTHON_VERSION": sys.version,
-        "ENV_VARS": {k: (v if k != "TOGETHER_API_KEY" else "REDACTED") for k, v in os.environ.items()},
+        "ENV_VARS_KEYS": list(os.environ.keys()),
+        "ENV_VARS_COUNT": len(os.environ),
+        "VERCEL_ENV_VARS": {k: (v if not k.endswith("API_KEY") and not k.endswith("SECRET") and not k.endswith("PASSWORD") else "REDACTED")
+                            for k, v in os.environ.items() if k.startswith("VERCEL_")},
         "STATIC_FOLDER": static_folder,
-        "TEMPLATE_FOLDER": template_folder
+        "TEMPLATE_FOLDER": template_folder,
+        "STATIC_FOLDER_EXISTS": os.path.exists(static_folder),
+        "TEMPLATE_FOLDER_EXISTS": os.path.exists(template_folder),
+        "CWD": os.getcwd(),
+        "FILES_IN_CWD": os.listdir(os.getcwd()) if os.path.exists(os.getcwd()) else []
     }
     return jsonify(env_vars)
 
 # Add a route to test the API key
 @app.route('/debug/api-key-test')
 def api_key_test():
+    result = {
+        "api_key_set": bool(TOGETHER_API_KEY),
+        "api_key_sources": {
+            "os.getenv": bool(api_key_from_getenv),
+            "os.environ": bool(api_key_from_environ),
+            "VERCEL_TOGETHER_API_KEY": bool(api_key_from_vercel),
+            "env_file": bool(api_key_from_file),
+            "hardcoded": bool(TOGETHER_API_KEY) and not any([api_key_from_getenv, api_key_from_environ, api_key_from_vercel, api_key_from_file])
+        },
+        "api_key_length": len(TOGETHER_API_KEY) if TOGETHER_API_KEY else 0,
+        "api_key_prefix": TOGETHER_API_KEY[:5] + "..." if TOGETHER_API_KEY else None
+    }
+
     if not TOGETHER_API_KEY:
-        return jsonify({
+        result.update({
             "success": False,
             "message": "API key not found in environment variables"
         })
+        return jsonify(result)
 
     try:
         # Make a simple API call to test the key
@@ -87,30 +143,41 @@ def api_key_test():
             "Content-Type": "application/json"
         }
 
+        logger.info("Making test request to Together API")
         response = requests.get(
             "https://api.together.xyz/v1/models",
             headers=headers
         )
 
+        result.update({
+            "request_made": True,
+            "status_code": response.status_code
+        })
+
         if response.status_code == 200:
-            return jsonify({
+            models_data = response.json().get("data", [])
+            result.update({
                 "success": True,
                 "message": "API key is valid",
-                "status_code": response.status_code,
-                "models_count": len(response.json().get("data", []))
+                "models_count": len(models_data),
+                "models_sample": [m.get("id") for m in models_data[:3]] if models_data else []
             })
         else:
-            return jsonify({
+            result.update({
                 "success": False,
                 "message": "API key validation failed",
-                "status_code": response.status_code,
                 "response": response.text
             })
     except Exception as e:
-        return jsonify({
+        logger.error(f"Error testing API key: {e}", exc_info=True)
+        result.update({
             "success": False,
-            "message": f"Error testing API key: {str(e)}"
+            "message": f"Error testing API key: {str(e)}",
+            "error_type": type(e).__name__,
+            "request_made": False
         })
+
+    return jsonify(result)
 
 @app.route('/')
 def index():
