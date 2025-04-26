@@ -1,0 +1,15 @@
+[Unit]
+Description=Synthara AI Application
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/path/to/synthara-ai
+Environment="PATH=/path/to/synthara-ai/.venv/bin"
+ExecStart=/path/to/synthara-ai/.venv/bin/gunicorn --workers 4 --bind 0.0.0.0:8000 simple_app:app
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

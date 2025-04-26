@@ -13,6 +13,42 @@ A web application that uses Together AI's API to generate text and images with a
 
 ![Synthara AI Usage](static/images/usage.png)
 
+## Quick Start
+
+```bash
+# Clone the repository
+git clone https://github.com/bniladridas/software.git
+cd software
+
+# Set up environment
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+pip install together
+pip install Flask==2.0.1 Werkzeug==2.0.1
+
+# Create .env file with your API key
+echo "TOGETHER_API_KEY=your_api_key_here" > .env
+
+# Run the server
+python simple_app.py
+```
+
+Then open http://127.0.0.1:5001 in your browser.
+
+The server will start in debug mode and automatically reload when you make changes to the code. You should see output similar to:
+
+```
+INFO:__main__:Together API client initialized successfully
+* Serving Flask app 'simple_app' (lazy loading)
+* Environment: production
+  WARNING: This is a development server. Do not use it in a production deployment.
+* Debug mode: on
+INFO:werkzeug: * Running on http://127.0.0.1:5001/ (Press CTRL+C to quit)
+```
+
+To stop the server, press CTRL+C in the terminal.
+
 ## Features
 
 - Text generation using Llama-3.3-70B, DeepSeek-R1-70B, and Llama-4-Maverick-17B models
@@ -47,28 +83,6 @@ For premium models like Llama-4-Maverick-17B, you'll need to provide your own To
 4. Your key will be stored locally in your browser
 5. You can now use premium models with your API key
 
-## Local Development
-
-1. Clone the repository
-2. Create a virtual environment:
-   ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-3. Install dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-4. Create a `.env` file with your Together AI API key:
-   ```
-   TOGETHER_API_KEY=your_api_key_here
-   ```
-5. Run the application:
-   ```
-   python simple_app.py
-   ```
-6. Open http://127.0.0.1:5001 in your browser
-
 ## Deployment on Vercel
 
 This application is configured for deployment on Vercel:
@@ -77,6 +91,8 @@ This application is configured for deployment on Vercel:
 2. Connect your GitHub repository to Vercel
 3. Add the `TOGETHER_API_KEY` environment variable in the Vercel project settings
 4. Deploy!
+
+For detailed deployment instructions, see [VERCEL_DEPLOYMENT.md](VERCEL_DEPLOYMENT.md).
 
 ## Environment Variables
 
