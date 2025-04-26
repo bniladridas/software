@@ -238,263 +238,510 @@ def api_key_test():
 
 @app.route('/')
 def index():
-    # Check if we're in Vercel environment and if base.html exists
-    base_html_path = os.path.join(template_folder, 'base.html')
-    base_html_exists = os.path.exists(base_html_path)
+    # Always use the standalone HTML for consistency
+    # This bypasses the template system entirely
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AI Generation - Synthara AI</title>
 
-    # If we're in Vercel and base.html doesn't exist, use a modified template
-    if is_vercel and not base_html_exists:
-        logger.warning("Running in Vercel and base.html not found. Using inline template.")
+        <!-- Author and Description Meta Tags -->
+        <meta name="author" content="Niladri Das">
+        <meta name="description" content="Synthara AI: Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.">
 
-        # Create a simplified version of the page with hamburger menu directly included
-        html_content = """
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>AI Generation - Synthara AI</title>
+        <!-- Open Graph / Social Media Meta Tags -->
+        <meta property="og:title" content="Synthara AI - Advanced Text & Image Generation Platform">
+        <meta property="og:description" content="Synthara AI: Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.">
+        <meta property="og:image" content="https://software-bniladridas.vercel.app/static/images/og-image.png">
+        <meta property="og:url" content="https://software-bniladridas.vercel.app/">
+        <meta property="og:type" content="website">
+        <meta property="og:site_name" content="Synthara AI">
+        <meta property="article:author" content="Niladri Das (bniladridas)">
 
-            <!-- Author and Description Meta Tags -->
-            <meta name="author" content="Niladri Das">
-            <meta name="description" content="Synthara AI: Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.">
+        <!-- Twitter Card Meta Tags -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Synthara AI - Advanced Text & Image Generation Platform">
+        <meta name="twitter:description" content="Synthara AI: Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.">
+        <meta name="twitter:image" content="https://software-bniladridas.vercel.app/static/images/og-image.svg">
+        <meta name="twitter:creator" content="@bniladridas">
 
-            <!-- Favicon -->
-            <link rel="icon" href="/static/images/favicon.ico">
+        <!-- LinkedIn Specific Meta Tags -->
+        <meta property="linkedin:owner" content="Niladri Das (bniladridas)">
+        <meta property="linkedin:title" content="Synthara AI - Advanced Text & Image Generation Platform">
+        <meta property="linkedin:description" content="Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.">
+        <meta name="image" content="https://software-bniladridas.vercel.app/static/images/og-image.png">
 
-            <!-- CSS -->
-            <link rel="stylesheet" href="/static/css/styles.css">
-            <link rel="stylesheet" href="/static/css/mobile.css">
+        <!-- Favicon -->
+        <link rel="icon" href="/static/images/favicon.ico">
 
-            <!-- Font Awesome -->
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <!-- CSS -->
+        <link rel="stylesheet" href="/static/css/styles.css">
+        <link rel="stylesheet" href="/static/css/mobile.css">
 
-            <style>
-                /* Critical mobile styles inline */
-                @media (max-width: 768px) {
-                    .hamburger-menu {
-                        display: block !important;
-                        position: absolute !important;
-                        top: 16px !important;
-                        right: 0 !important;
-                        z-index: 100 !important;
-                        background: none !important;
-                        border: none !important;
-                        cursor: pointer !important;
-                        padding: 8px !important;
-                        width: 44px !important;
-                        height: 44px !important;
-                    }
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-                    .hamburger-icon {
-                        display: block;
-                        position: relative;
-                        width: 24px;
-                        height: 18px;
-                        margin: 0 auto;
-                    }
-
-                    .hamburger-icon span {
-                        display: block;
-                        position: absolute;
-                        height: 2px;
-                        width: 100%;
-                        background: #000;
-                        border-radius: 2px;
-                        opacity: 1;
-                        left: 0;
-                        transform: rotate(0deg);
-                        transition: .25s ease-in-out;
-                    }
-
-                    .hamburger-icon span:nth-child(1) {
-                        top: 0px;
-                    }
-
-                    .hamburger-icon span:nth-child(2) {
-                        top: 8px;
-                    }
-
-                    .hamburger-icon span:nth-child(3) {
-                        top: 16px;
-                    }
-
-                    header {
-                        position: relative !important;
-                        padding-top: 16px !important;
-                    }
-
-                    .nav-links {
-                        display: none;
-                        width: 100%;
-                    }
-
-                    .nav-links.open {
-                        display: flex;
-                        flex-direction: column;
-                        position: absolute;
-                        top: 70px;
-                        left: 0;
-                        right: 0;
-                        background: #fff;
-                        padding: 24px;
-                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                        z-index: 99;
-                        border-radius: 2px;
-                        border: 1px solid rgba(0, 0, 0, 0.05);
-                    }
-
-                    .nav-link {
-                        padding: 16px 0;
-                        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-                        width: 100%;
-                        text-align: center;
-                        font-size: 1rem;
-                    }
-
-                    .nav-link:last-child {
-                        border-bottom: none;
-                    }
+        <style>
+            /* Critical mobile styles inline */
+            @media (max-width: 768px) {
+                .hamburger-menu {
+                    display: block !important;
+                    position: absolute !important;
+                    top: 16px !important;
+                    right: 0 !important;
+                    z-index: 100 !important;
+                    background: none !important;
+                    border: none !important;
+                    cursor: pointer !important;
+                    padding: 8px !important;
+                    width: 44px !important;
+                    height: 44px !important;
                 }
-            </style>
-        </head>
-        <body>
-            <div class="app-container">
-                <header>
-                    <div class="logo">
-                        <img src="/static/images/logo.png" alt="Synthara AI Logo" class="header-logo">
-                        <h1>AI Generation</h1>
+
+                .hamburger-icon {
+                    display: block;
+                    position: relative;
+                    width: 24px;
+                    height: 18px;
+                    margin: 0 auto;
+                }
+
+                .hamburger-icon span {
+                    display: block;
+                    position: absolute;
+                    height: 2px;
+                    width: 100%;
+                    background: #000;
+                    border-radius: 2px;
+                    opacity: 1;
+                    left: 0;
+                    transform: rotate(0deg);
+                    transition: .25s ease-in-out;
+                }
+
+                .hamburger-icon span:nth-child(1) {
+                    top: 0px;
+                }
+
+                .hamburger-icon span:nth-child(2) {
+                    top: 8px;
+                }
+
+                .hamburger-icon span:nth-child(3) {
+                    top: 16px;
+                }
+
+                .hamburger-menu.open .hamburger-icon span:nth-child(1) {
+                    top: 8px;
+                    transform: rotate(135deg);
+                }
+
+                .hamburger-menu.open .hamburger-icon span:nth-child(2) {
+                    opacity: 0;
+                    left: -60px;
+                }
+
+                .hamburger-menu.open .hamburger-icon span:nth-child(3) {
+                    top: 8px;
+                    transform: rotate(-135deg);
+                }
+
+                header {
+                    position: relative !important;
+                    padding-top: 16px !important;
+                }
+
+                .nav-links {
+                    display: none;
+                    width: 100%;
+                }
+
+                .nav-links.open {
+                    display: flex;
+                    flex-direction: column;
+                    position: absolute;
+                    top: 70px;
+                    left: 0;
+                    right: 0;
+                    background: #fff;
+                    padding: 24px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    z-index: 99;
+                    border-radius: 2px;
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+                }
+
+                .nav-link {
+                    padding: 16px 0;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    width: 100%;
+                    text-align: center;
+                    font-size: 1rem;
+                }
+
+                .nav-link:last-child {
+                    border-bottom: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="app-container">
+            <header>
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="Synthara AI Logo" class="header-logo">
+                    <h1>AI Generation</h1>
+                </div>
+
+                <!-- Static hamburger menu button with inline styles -->
+                <button class="hamburger-menu" aria-label="Toggle navigation menu">
+                    <div class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+
+                <div class="nav-links">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/resources" class="nav-link">About Our Models</a>
+                    <a href="/synthara" class="nav-link">About Synthara AI</a>
+                    <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
+                    <a href="/api-key" class="nav-link">API Key Setup</a>
+                </div>
+            </header>
+
+            <main>
+                <div class="combined-interface">
+                    <!-- Text Generation Section -->
+                    <div class="section">
+                        <div class="input-section">
+                            <h2>Text</h2>
+                            <div class="form-group">
+                                <label for="text-model">Model</label>
+                                <select id="text-model">
+                                    <option value="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free">Llama-3.3-70B</option>
+                                    <option value="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free">DeepSeek-R1-70B</option>
+                                    <option value="meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8">Llama-4-Maverick-17B (API Key Required)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="text-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
+                                <textarea id="text-prompt" rows="4" placeholder="Type here..."></textarea>
+                            </div>
+                            <button id="generate-text-btn" class="primary-btn">
+                                <span>Generate</span>
+                            </button>
+                        </div>
+                        <div class="output-section">
+                            <div class="output-header">
+                                <h3>Output</h3>
+                                <div>
+                                    <button id="copy-text-btn" class="icon-btn" title="Copy">
+                                        <i class="fas fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="text-output" class="output-content">
+                                <p class="placeholder">Output will appear here</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Static hamburger menu button with inline styles -->
-                    <button class="hamburger-menu" aria-label="Toggle navigation menu">
-                        <div class="hamburger-icon">
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                    <!-- Image Generation Section -->
+                    <div class="section">
+                        <div class="input-section">
+                            <h2>Image</h2>
+                            <div class="form-group">
+                                <label for="image-model">Model</label>
+                                <select id="image-model">
+                                    <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="image-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
+                                <textarea id="image-prompt" rows="4" placeholder="Type here..."></textarea>
+                            </div>
+                            <button id="generate-image-btn" class="primary-btn">
+                                <span>Generate</span>
+                            </button>
                         </div>
-                    </button>
-
-                    <div class="nav-links">
-                        <a href="/" class="nav-link">Home</a>
-                        <a href="/resources" class="nav-link">About Our Models</a>
-                        <a href="/synthara" class="nav-link">About Synthara AI</a>
-                        <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
-                        <a href="/api-key" class="nav-link">API Key Setup</a>
-                    </div>
-                </header>
-
-                <main>
-                    <div class="combined-interface">
-                        <!-- Text Generation Section -->
-                        <div class="section">
-                            <div class="input-section">
-                                <h2>Text</h2>
-                                <div class="form-group">
-                                    <label for="text-model">Model</label>
-                                    <select id="text-model">
-                                        <option value="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free">Llama-3.3-70B</option>
-                                        <option value="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free">DeepSeek-R1-70B</option>
-                                        <option value="meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8">Llama-4-Maverick-17B (API Key Required)</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="text-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
-                                    <textarea id="text-prompt" rows="4" placeholder="Type here..."></textarea>
-                                </div>
-                                <button id="generate-text-btn" class="primary-btn">
-                                    <span>Generate</span>
-                                </button>
+                        <div class="output-section">
+                            <div class="output-header">
+                                <h3>Output</h3>
                             </div>
-                            <div class="output-section">
-                                <div class="output-header">
-                                    <h3>Output</h3>
-                                    <div>
-                                        <button id="copy-text-btn" class="icon-btn" title="Copy">
-                                            <i class="fas fa-copy"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div id="text-output" class="output-content">
-                                    <p class="placeholder">Output will appear here</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Image Generation Section -->
-                        <div class="section">
-                            <div class="input-section">
-                                <h2>Image</h2>
-                                <div class="form-group">
-                                    <label for="image-model">Model</label>
-                                    <select id="image-model">
-                                        <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="image-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
-                                    <textarea id="image-prompt" rows="4" placeholder="Type here..."></textarea>
-                                </div>
-                                <button id="generate-image-btn" class="primary-btn">
-                                    <span>Generate</span>
-                                </button>
-                            </div>
-                            <div class="output-section">
-                                <div class="output-header">
-                                    <h3>Output</h3>
-                                </div>
-                                <div id="image-output" class="output-content image-grid">
-                                    <p class="placeholder">Output will appear here</p>
-                                </div>
+                            <div id="image-output" class="output-content image-grid">
+                                <p class="placeholder">Output will appear here</p>
                             </div>
                         </div>
                     </div>
-                </main>
+                </div>
+            </main>
 
-                <footer>
-                    <p>&copy; 2024 Synthara AI. All rights reserved.</p>
-                </footer>
-            </div>
+            <footer>
+                <p>&copy; 2024 Synthara AI. All rights reserved.</p>
+            </footer>
+        </div>
 
-            <!-- Inline script for critical mobile functionality -->
-            <script>
-                // Ensure hamburger menu works even if external scripts fail to load
-                document.addEventListener('DOMContentLoaded', function() {
-                    const hamburgerBtn = document.querySelector('.hamburger-menu');
-                    const navLinks = document.querySelector('.nav-links');
+        <!-- Inline script for critical mobile functionality -->
+        <script>
+            // Ensure hamburger menu works even if external scripts fail to load
+            document.addEventListener('DOMContentLoaded', function() {
+                const hamburgerBtn = document.querySelector('.hamburger-menu');
+                const navLinks = document.querySelector('.nav-links');
 
-                    if (hamburgerBtn && navLinks) {
-                        hamburgerBtn.addEventListener('click', function() {
-                            this.classList.toggle('open');
-                            navLinks.classList.toggle('open');
-                        });
-                    }
-                });
-            </script>
+                if (hamburgerBtn && navLinks) {
+                    hamburgerBtn.addEventListener('click', function() {
+                        this.classList.toggle('open');
+                        navLinks.classList.toggle('open');
+                    });
+                }
+            });
 
-            <!-- Core Scripts -->
-            <script src="/static/js/main.js"></script>
-            <script src="/static/js/notifications.js"></script>
-            <script src="/static/js/mobile.js"></script>
-        </body>
-        </html>
-        """
-        return html_content
+            // Execute immediately as well
+            (function() {
+                const hamburgerBtn = document.querySelector('.hamburger-menu');
+                const navLinks = document.querySelector('.nav-links');
 
-    # Normal rendering with template
-    return render_template('index.html')
+                if (hamburgerBtn && navLinks) {
+                    hamburgerBtn.addEventListener('click', function() {
+                        this.classList.toggle('open');
+                        navLinks.classList.toggle('open');
+                    });
+                }
+            })();
+        </script>
+
+        <!-- Core Scripts -->
+        <script src="/static/js/main.js"></script>
+        <script src="/static/js/notifications.js"></script>
+        <script src="/static/js/mobile.js"></script>
+    </body>
+    </html>
+    """
+    return html_content
 
 @app.route('/resources')
 def resources():
-    # Check if we're in Vercel environment and if base.html exists
-    base_html_path = os.path.join(template_folder, 'base.html')
-    base_html_exists = os.path.exists(base_html_path)
+    # Return a simple HTML page with the hamburger menu
+    html_content = """
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>About Our Models - Synthara AI</title>
 
-    # If we're in Vercel and base.html doesn't exist, redirect to home with a query parameter
-    if is_vercel and not base_html_exists:
-        return redirect('/?page=resources')
+        <!-- Author and Description Meta Tags -->
+        <meta name="author" content="Niladri Das">
+        <meta name="description" content="Learn about the AI models available in Synthara AI. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.">
 
-    return render_template('resources.html')
+        <!-- Favicon -->
+        <link rel="icon" href="/static/images/favicon.ico">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="/static/css/styles.css">
+        <link rel="stylesheet" href="/static/css/mobile.css">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+        <style>
+            /* Critical mobile styles inline */
+            @media (max-width: 768px) {
+                .hamburger-menu {
+                    display: block !important;
+                    position: absolute !important;
+                    top: 16px !important;
+                    right: 0 !important;
+                    z-index: 100 !important;
+                    background: none !important;
+                    border: none !important;
+                    cursor: pointer !important;
+                    padding: 8px !important;
+                    width: 44px !important;
+                    height: 44px !important;
+                }
+
+                .hamburger-icon {
+                    display: block;
+                    position: relative;
+                    width: 24px;
+                    height: 18px;
+                    margin: 0 auto;
+                }
+
+                .hamburger-icon span {
+                    display: block;
+                    position: absolute;
+                    height: 2px;
+                    width: 100%;
+                    background: #000;
+                    border-radius: 2px;
+                    opacity: 1;
+                    left: 0;
+                    transform: rotate(0deg);
+                    transition: .25s ease-in-out;
+                }
+
+                .hamburger-icon span:nth-child(1) {
+                    top: 0px;
+                }
+
+                .hamburger-icon span:nth-child(2) {
+                    top: 8px;
+                }
+
+                .hamburger-icon span:nth-child(3) {
+                    top: 16px;
+                }
+
+                .hamburger-menu.open .hamburger-icon span:nth-child(1) {
+                    top: 8px;
+                    transform: rotate(135deg);
+                }
+
+                .hamburger-menu.open .hamburger-icon span:nth-child(2) {
+                    opacity: 0;
+                    left: -60px;
+                }
+
+                .hamburger-menu.open .hamburger-icon span:nth-child(3) {
+                    top: 8px;
+                    transform: rotate(-135deg);
+                }
+
+                header {
+                    position: relative !important;
+                    padding-top: 16px !important;
+                }
+
+                .nav-links {
+                    display: none;
+                    width: 100%;
+                }
+
+                .nav-links.open {
+                    display: flex;
+                    flex-direction: column;
+                    position: absolute;
+                    top: 70px;
+                    left: 0;
+                    right: 0;
+                    background: #fff;
+                    padding: 24px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    z-index: 99;
+                    border-radius: 2px;
+                    border: 1px solid rgba(0, 0, 0, 0.05);
+                }
+
+                .nav-link {
+                    padding: 16px 0;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+                    width: 100%;
+                    text-align: center;
+                    font-size: 1rem;
+                }
+
+                .nav-link:last-child {
+                    border-bottom: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="app-container">
+            <header>
+                <div class="logo">
+                    <img src="/static/images/logo.png" alt="Synthara AI Logo" class="header-logo">
+                    <h1>About Our Models</h1>
+                </div>
+
+                <!-- Static hamburger menu button with inline styles -->
+                <button class="hamburger-menu" aria-label="Toggle navigation menu">
+                    <div class="hamburger-icon">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </button>
+
+                <div class="nav-links">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/resources" class="nav-link">About Our Models</a>
+                    <a href="/synthara" class="nav-link">About Synthara AI</a>
+                    <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
+                    <a href="/api-key" class="nav-link">API Key Setup</a>
+                </div>
+            </header>
+
+            <main>
+                <div class="section">
+                    <h2>About Our Models</h2>
+                    <p>Synthara AI provides access to state-of-the-art AI models for text and image generation.</p>
+
+                    <h3>Text Generation Models</h3>
+                    <ul>
+                        <li><strong>Llama-3.3-70B</strong> - Meta's latest large language model with 70 billion parameters</li>
+                        <li><strong>DeepSeek-R1-70B</strong> - A powerful 70B parameter model from DeepSeek AI</li>
+                        <li><strong>Llama-4-Maverick-17B</strong> - Meta's Llama 4 model (requires API key)</li>
+                    </ul>
+
+                    <h3>Image Generation Models</h3>
+                    <ul>
+                        <li><strong>FLUX.1-dev</strong> - A 12B parameter rectified flow transformer for high-quality image generation</li>
+                    </ul>
+
+                    <p>Our API Key Orchestration Pipeline allows you to access premium AI models with your own API keys.</p>
+                </div>
+            </main>
+
+            <footer>
+                <p>&copy; 2024 Synthara AI. All rights reserved.</p>
+            </footer>
+        </div>
+
+        <!-- Inline script for critical mobile functionality -->
+        <script>
+            // Ensure hamburger menu works even if external scripts fail to load
+            document.addEventListener('DOMContentLoaded', function() {
+                const hamburgerBtn = document.querySelector('.hamburger-menu');
+                const navLinks = document.querySelector('.nav-links');
+
+                if (hamburgerBtn && navLinks) {
+                    hamburgerBtn.addEventListener('click', function() {
+                        this.classList.toggle('open');
+                        navLinks.classList.toggle('open');
+                    });
+                }
+            });
+
+            // Execute immediately as well
+            (function() {
+                const hamburgerBtn = document.querySelector('.hamburger-menu');
+                const navLinks = document.querySelector('.nav-links');
+
+                if (hamburgerBtn && navLinks) {
+                    hamburgerBtn.addEventListener('click', function() {
+                        this.classList.toggle('open');
+                        navLinks.classList.toggle('open');
+                    });
+                }
+            })();
+        </script>
+
+        <!-- Core Scripts -->
+        <script src="/static/js/main.js"></script>
+        <script src="/static/js/notifications.js"></script>
+        <script src="/static/js/mobile.js"></script>
+    </body>
+    </html>
+    """
+    return html_content
 
 @app.route('/synthara')
 def synthara():
