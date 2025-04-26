@@ -37,8 +37,80 @@ AVAILABLE_IMAGE_MODELS = [
     {"id": "black-forest-labs/FLUX.1-dev", "name": "FLUX.1-dev"}
 ]
 
-# Get API key from environment
+# Get API key from environment - try multiple methods
 TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
+if not TOGETHER_API_KEY and "TOGETHER_API_KEY" in os.environ:
+    TOGETHER_API_KEY = os.environ["TOGETHER_API_KEY"]
+
+# Try loading from .env file directly if not found in environment
+if not TOGETHER_API_KEY:
+    try:
+        env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '.env')
+        if os.path.exists(env_path):
+            with open(env_path, 'r') as f:
+                for line in f:
+                    if line.strip() and not line.startswith('#'):
+                        key, value = line.strip().split('=', 1)
+                        if key == "TOGETHER_API_KEY":
+                            TOGETHER_API_KEY = value
+                            break
+    except Exception as e:
+        logger.error(f"Error loading API key from .env file: {e}")
+
+logger.info(f"API Key available: {bool(TOGETHER_API_KEY)}")
+
+# Add a debug route to check environment variables
+@app.route('/debug/env')
+def debug_env():
+    env_vars = {
+        "TOGETHER_API_KEY_SET": bool(TOGETHER_API_KEY),
+        "PYTHON_VERSION": sys.version,
+        "ENV_VARS": {k: (v if k != "TOGETHER_API_KEY" else "REDACTED") for k, v in os.environ.items()},
+        "STATIC_FOLDER": static_folder,
+        "TEMPLATE_FOLDER": template_folder
+    }
+    return jsonify(env_vars)
+
+# Add a route to test the API key
+@app.route('/debug/api-key-test')
+def api_key_test():
+    if not TOGETHER_API_KEY:
+        return jsonify({
+            "success": False,
+            "message": "API key not found in environment variables"
+        })
+
+    try:
+        # Make a simple API call to test the key
+        headers = {
+            "Authorization": f"Bearer {TOGETHER_API_KEY}",
+            "Content-Type": "application/json"
+        }
+
+        response = requests.get(
+            "https://api.together.xyz/v1/models",
+            headers=headers
+        )
+
+        if response.status_code == 200:
+            return jsonify({
+                "success": True,
+                "message": "API key is valid",
+                "status_code": response.status_code,
+                "models_count": len(response.json().get("data", []))
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "message": "API key validation failed",
+                "status_code": response.status_code,
+                "response": response.text
+            })
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": f"Error testing API key: {str(e)}"
+        })
 
 @app.route('/')
 def index():
@@ -117,6 +189,11 @@ def generate_text():
     max_tokens = data.get('max_tokens', 2048)
     api_key = data.get('apiKey', TOGETHER_API_KEY)
 
+    # Log API key status
+    logger.info(f"API request received. Default API key available: {bool(TOGETHER_API_KEY)}")
+    logger.info(f"User provided API key: {bool(data.get('apiKey'))}")
+    logger.info(f"Final API key available: {bool(api_key)}")
+
     # Enhanced prompt for natural, conversational text generation
     enhanced_prompt = f"""Write a natural, conversational response to the following prompt.
 Use a friendly tone and write in flowing paragraphs without bullet points, bold text, or headings.
@@ -131,6 +208,8 @@ Remember to write in a natural, flowing style with regular paragraphs."""
         # Return mock response if API key is not available
         mock_response = f"This is a mock response to your prompt: '{prompt}'\n\n"
         mock_response += "The API key is not configured. Please set the TOGETHER_API_KEY environment variable."
+        mock_response += "\n\nDebug info: Default API key available: " + str(bool(TOGETHER_API_KEY))
+        mock_response += "\nUser provided API key: " + str(bool(data.get('apiKey')))
 
         return jsonify({
             'success': True,
