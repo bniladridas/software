@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthara AI</title>
+
+    <!-- Author and Description Meta Tags -->
+    <meta name="author" content="Niladri Das">
+    <meta name="description" content="We design an orchestrator. Synthara AI combines textual and visual intelligence with humor and truth to create a powerful AI experience.">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Synthara AI - Intelligence Orchestration">
+    <meta property="og:description" content="We design an orchestrator. Synthara AI combines textual and visual intelligence with humor and truth to create a powerful AI experience.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Synthara AI">
+    <meta property="article:author" content="Niladri Das">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Synthara AI - Intelligence Orchestration">
+    <meta name="twitter:description" content="We design an orchestrator. Synthara AI combines textual and visual intelligence with humor and truth to create a powerful AI experience.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/og-image.svg', _external=True) }}">
+    <meta name="twitter:creator" content="@niladridas">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+
+    <style>
+        .synthara-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--border-color);
+        }
+
+        .intelligence-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .intelligence-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .intelligence-card {
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .intelligence-card h3 {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        .quote {
+            font-style: italic;
+            margin: 2rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid var(--border-color);
+        }
+
+        .quote-author {
+            display: block;
+            margin-top: 0.5rem;
+            font-style: normal;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-link i {
+            margin-right: 0.5rem;
+        }
+
+        .fun-fact {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: var(--bg-tertiary);
+            border-left: 3px solid var(--accent);
+        }
+
+        .fun-fact h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .founder-section {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .founder-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1.5rem;
+            border: 2px solid var(--border-color);
+        }
+
+        .founder-info h4 {
+            margin: 0 0 0.5rem 0;
+            font-weight: var(--font-weight-normal);
+            font-size: var(--font-size-lg);
+        }
+
+        .founder-info p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container page-transition">
+        <header>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo" class="header-logo">
+                <h1>Synthara AI</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Generator</a>
+                <a href="/resources" class="nav-link">Models</a>
+                <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
+                <a href="/api-key" class="nav-link">API Key Setup</a>
+            </div>
+        </header>
+
+        <main>
+            <div class="synthara-container">
+                <h2>We design an orchestrator</h2>
+
+                <div class="section">
+                    <p>At Synthara AI, we're not just building another AI company. We're orchestrating a symphony of intelligence, where textual and visual understanding harmonize to create something greater than the sum of their parts.</p>
+
+                    <p>Our approach is simple: combine cutting-edge AI models with a healthy dose of humor and an unwavering commitment to truth. The result? An intelligence orchestrator that's not only powerful but also delightful to interact with.</p>
+
+                    <div class="quote">
+                        "The best AI doesn't just compute—it contemplates. It doesn't just respond—it resonates. And occasionally, it tells a dad joke so bad you can't help but laugh."
+                        <span class="quote-author">— Niladri Das, Founder & CEO</span>
+                    </div>
+
+                    <div class="founder-section">
+                        <img src="{{ url_for('static', filename='images/founder.jpg') }}" alt="Niladri Das, Founder & CEO" class="founder-image">
+                        <div class="founder-info">
+                            <h4>Niladri Das</h4>
+                            <p>Founder & CEO, Synthara AI</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">The Intelligence Duet</h3>
+
+                    <div class="intelligence-grid">
+                        <div class="intelligence-card">
+                            <h3>Textual Intelligence</h3>
+                            <p>Our textual intelligence is like a well-read librarian who's also surprisingly good at stand-up comedy. It understands context, nuance, and the subtle art of knowing when to be serious and when to lighten the mood.</p>
+
+                            <p>We've trained our models to think beyond simple pattern matching. They don't just predict the next word—they understand the underlying concepts, the emotional tone, and the cultural context of language.</p>
+
+                            <div class="fun-fact">
+                                <h4>The Truth About Our Text Models</h4>
+                                <p>Our text models have read more books than most humans ever will, yet they still occasionally mix up "their," "there," and "they're." Just like your English professor who insists on perfect grammar but sends emails full of typos.</p>
+                            </div>
+                        </div>
+
+                        <div class="intelligence-card">
+                            <h3>Visual Intelligence</h3>
+                            <p>Our visual intelligence is like an artist who's spent decades studying the masters but isn't above drawing a mustache on the Mona Lisa if it'll make you smile. It sees patterns, understands composition, and can visualize concepts in ways that are both accurate and creative.</p>
+
+                            <p>We've designed our visual models to go beyond pixel-level understanding to grasp the semantic meaning of images—the objects, their relationships, and the story they tell together.</p>
+
+                            <div class="fun-fact">
+                                <h4>The Truth About Our Image Models</h4>
+                                <p>Our image models can generate photorealistic scenes of distant galaxies but still struggle with hands. If you ask for an image of someone playing piano, prepare for some anatomically creative finger arrangements. We're working on it, we promise.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">The Orchestration</h3>
+
+                    <p>The magic happens when these intelligences work together. Text informs vision, vision enriches text, and the result is a more complete understanding of the world—and more useful outputs for you.</p>
+
+                    <p>Our orchestrator doesn't just switch between text and image models; it creates a continuous dialogue between them. When you ask for an image, the text model helps interpret your request. When you ask a question about an image, the visual model helps understand what you're referring to.</p>
+
+                    <div class="fun-fact">
+                        <h4>The Honest Truth</h4>
+                        <p>Sometimes our models disagree with each other, like an old married couple arguing about directions. The text model might say "that's definitely a cat" while the image model insists "no, that's clearly a small dog with pointy ears." In these cases, we don't force a consensus—we show you both perspectives and let you decide. Because sometimes the truth isn't binary, and acknowledging uncertainty is more honest than false confidence.</p>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Why Humor Matters</h3>
+
+                    <p>We believe that humor is not just a nice-to-have feature—it's essential to creating AI that feels human and relatable. Humor requires understanding context, expectations, and the subtle art of surprise. It's one of the most sophisticated forms of intelligence.</p>
+
+                    <p>But there's another reason we emphasize humor: it keeps us humble. AI that takes itself too seriously risks overconfidence. A model that can laugh at itself is more likely to acknowledge its limitations and uncertainties—and that leads to more truthful, reliable outputs.</p>
+
+                    <div class="quote">
+                        "In the age of artificial intelligence, the most valuable thing might be authentic laughter."
+                        <span class="quote-author">— Synthara AI Research Team</span>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">The Commitment to Truth</h3>
+
+                    <p>At Synthara AI, we believe that intelligence without honesty is just sophisticated deception. That's why we've built truth-seeking mechanisms into every layer of our system:</p>
+
+                    <ul>
+                        <li>Our models are trained to distinguish between what they know and what they don't</li>
+                        <li>We explicitly reward accurate uncertainty—saying "I don't know" when appropriate</li>
+                        <li>We maintain transparent documentation of our models' limitations and biases</li>
+                        <li>We design our interfaces to make uncertainty visible, not hidden</li>
+                    </ul>
+
+                    <p>The result is AI that's not just intelligent but trustworthy—a partner that helps you navigate complexity without pretending it has all the answers.</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">The Future Orchestra</h3>
+
+                    <p>We're just getting started. Our vision for the future includes more instruments in our orchestra—models that understand sound, physical systems, 3D space, and more. Each new capability will be integrated not as a separate tool but as part of a harmonious whole.</p>
+
+                    <p>And through it all, we'll maintain our commitment to the dual values that define Synthara AI: the playful joy of humor and the unwavering pursuit of truth.</p>
+
+                    <div class="fun-fact">
+                        <h4>A Final Truth</h4>
+                        <p>We don't actually know what consciousness is or how to create it. Anyone who claims otherwise is either mistaken or selling something. But we do know how to create tools that amplify human intelligence and creativity—and that's what we're focused on building. No hype, no false promises, just genuinely useful AI that's a joy to use.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 Synthara AI</p>
+            <p class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+</body>
+</html>

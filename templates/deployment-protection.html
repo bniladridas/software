@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deployment Protection Guide</title>
+
+    <!-- Author and Description Meta Tags -->
+    <meta name="author" content="Niladri Das">
+    <meta name="description" content="Learn about Vercel's deployment protection features and how to bypass them for testing and automation.">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Synthara AI - Deployment Protection Guide">
+    <meta property="og:description" content="Learn about Vercel's deployment protection features and how to bypass them for testing and automation.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Synthara AI">
+    <meta property="article:author" content="Niladri Das">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Synthara AI - Deployment Protection Guide">
+    <meta name="twitter:description" content="Learn about Vercel's deployment protection features and how to bypass them for testing and automation.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/og-image.svg', _external=True) }}">
+    <meta name="twitter:creator" content="@niladridas">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+        .protection-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--border-color);
+        }
+
+        .protection-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+        }
+
+        .protection-table th,
+        .protection-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .protection-table th {
+            font-weight: var(--font-weight-normal);
+            color: var(--text-primary);
+            background-color: var(--bg-tertiary);
+        }
+
+        .protection-table td {
+            color: var(--text-secondary);
+        }
+
+        .code-block {
+            background-color: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container page-transition">
+        <header>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo" class="header-logo">
+                <h1>Deployment Protection</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Generator</a>
+                <a href="/resources" class="nav-link">Models</a>
+                <a href="/synthara" class="nav-link">About Synthara AI</a>
+                <a href="/api-key" class="nav-link">API Key Setup</a>
+            </div>
+        </header>
+
+        <main>
+            <div class="protection-container">
+                <a href="/" class="back-link">
+                    Back to Generator
+                </a>
+
+                <h2>Vercel Deployment Protection Guide</h2>
+
+                <div class="section">
+                    <h3 class="section-title">Overview</h3>
+                    <p>Vercel's Deployment Protection provides robust security for your deployed sites, allowing fine-grained access control across different environments. This guide explains how protection works and the various methods to bypass it when needed.</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Protection Methods</h3>
+                    <p>Vercel offers three primary protection methods:</p>
+
+                    <table class="protection-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Description</th>
+                                <th>Availability</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Vercel Authentication</strong></td>
+                                <td>Restricts access to Vercel users with appropriate permissions</td>
+                                <td>All plans</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Password Protection</strong></td>
+                                <td>Requires a password to access protected deployments</td>
+                                <td>Enterprise plan or Pro plan add-on ($150/month)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Trusted IPs</strong></td>
+                                <td>Limits access to specific IP addresses</td>
+                                <td>Enterprise plan</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Protection Levels</h3>
+                    <p>You can configure different protection levels for your environments:</p>
+
+                    <table class="protection-table">
+                        <thead>
+                            <tr>
+                                <th>Level</th>
+                                <th>What's Protected</th>
+                                <th>What's Public</th>
+                                <th>Availability</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Standard Protection</strong></td>
+                                <td>All preview URLs and production deployment URLs</td>
+                                <td>Production URLs with custom domains</td>
+                                <td>All plans</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Only Preview Deployments</strong></td>
+                                <td>Preview URLs only</td>
+                                <td>All production URLs</td>
+                                <td>All plans</td>
+                            </tr>
+                            <tr>
+                                <td><strong>All Deployments</strong></td>
+                                <td>All URLs including production domains</td>
+                                <td>Nothing</td>
+                                <td>Pro and Enterprise plans</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Only Production Deployments</strong></td>
+                                <td>Production URLs only (using Trusted IPs)</td>
+                                <td>Preview URLs</td>
+                                <td>Enterprise plan only</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Bypass Methods</h3>
+                    <p>When you need to allow access to protected deployments, Vercel provides several bypass options:</p>
+
+                    <h4>1. Protection Bypass for Automation</h4>
+                    <p>Perfect for automated testing scenarios like end-to-end (E2E) testing.</p>
+
+                    <p><strong>How it works:</strong></p>
+                    <ul>
+                        <li>Generates a secret that bypasses protection on all project deployments</li>
+                        <li>Automatically added as <code>VERCEL_AUTOMATION_BYPASS_SECRET</code> environment variable</li>
+                        <li>Available on all plans</li>
+                    </ul>
+
+                    <p><strong>Implementation:</strong></p>
+                    <div class="code-block">
+                        <code>HTTP Header: x-vercel-protection-bypass: your-generated-secret<br>
+                        Optional: x-vercel-set-bypass-cookie: true</code>
+                    </div>
+
+                    <p><strong>Playwright Example:</strong></p>
+                    <div class="code-block">
+                        <code>const config: PlaywrightTestConfig = {<br>
+                        &nbsp;&nbsp;use: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;extraHTTPHeaders: {<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'x-vercel-protection-bypass': process.env.VERCEL_AUTOMATION_BYPASS_SECRET,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'x-vercel-set-bypass-cookie': true<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                        &nbsp;&nbsp;}<br>
+                        }</code>
+                    </div>
+
+                    <h4>2. Shareable Links</h4>
+                    <p>Allows external access to specific branch deployments through a secure URL parameter.</p>
+
+                    <p><strong>Benefits:</strong></p>
+                    <ul>
+                        <li>Share preview deployments with clients or stakeholders</li>
+                        <li>Recipients can view the latest deployment and leave comments</li>
+                        <li>Available on all plans</li>
+                    </ul>
+
+                    <h4>3. Deployment Protection Exceptions</h4>
+                    <p>Specify domains that should be exempt from protection.</p>
+
+                    <p><strong>Features:</strong></p>
+                    <ul>
+                        <li>Makes specified domains publicly accessible</li>
+                        <li>Bypasses all protection features</li>
+                        <li>Available on Enterprise plans or with Advanced Protection add-on for Pro plans</li>
+                    </ul>
+
+                    <h4>4. OPTIONS Allowlist</h4>
+                    <p>Specify paths to be unprotected for CORS preflight OPTIONS requests.</p>
+
+                    <p><strong>Use case:</strong></p>
+                    <ul>
+                        <li>Enables cross-origin requests to protected deployments</li>
+                        <li>Handles browser preflight requests that don't send authentication</li>
+                        <li>Available on all plans</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Important Considerations</h3>
+                    <ul>
+                        <li>When using Standard Protection, update fetch requests to use relative paths instead of <code>VERCEL_URL</code></li>
+                        <li>Regenerating the automation bypass secret requires redeploying your app</li>
+                        <li>Only team members with appropriate permissions can manage protection bypass settings</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Advanced Deployment Protection</h3>
+                    <p>Enterprise customers get all features by default. Pro plan customers can access advanced features for $150/month:</p>
+                    <ul>
+                        <li>Password Protection</li>
+                        <li>Private Production Deployments</li>
+                        <li>Deployment Protection Exceptions</li>
+                    </ul>
+
+                    <p>This comprehensive system balances security with the flexibility needed for development, testing, and collaboration.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 Synthara AI</p>
+            <p class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+</body>
+</html>

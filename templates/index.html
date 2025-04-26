@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Generation</title>
+
+    <!-- Author and Description Meta Tags -->
+    <meta name="author" content="Niladri Das">
+    <meta name="description" content="Generate text and images with advanced AI models. Synthara AI orchestrates intelligence with a clean, minimalist interface.">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Synthara AI - Text & Image Generation">
+    <meta property="og:description" content="Generate text and images with advanced AI models. Synthara AI orchestrates intelligence with a clean, minimalist interface.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Synthara AI">
+    <meta property="article:author" content="Niladri Das">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Synthara AI - Text & Image Generation">
+    <meta name="twitter:description" content="Generate text and images with advanced AI models. Synthara AI orchestrates intelligence with a clean, minimalist interface.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/og-image.svg', _external=True) }}"
+    <meta name="twitter:creator" content="@niladridas">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <div class="app-container page-transition">
+        <header>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo" class="header-logo">
+                <h1>AI Generation</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/resources" class="nav-link">About Our Models</a>
+                <a href="/synthara" class="nav-link">About Synthara AI</a>
+                <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
+                <a href="/api-key" class="nav-link">API Key Setup</a>
+            </div>
+        </header>
+
+        <main>
+            <div class="combined-interface">
+                <!-- Text Generation Section -->
+                <div class="section">
+                    <div class="input-section">
+                        <h2>Text</h2>
+                        <div class="form-group">
+                            <label for="text-model">Model</label>
+                            <select id="text-model">
+                                <option value="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free">Llama-3.3-70B</option>
+                                <option value="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free">DeepSeek-R1-70B</option>
+                                <option value="meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8">Llama-4-Maverick-17B (API Key Required)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="text-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
+                            <textarea id="text-prompt" rows="4" placeholder="Type here..."></textarea>
+                        </div>
+                        <button id="generate-text-btn" class="primary-btn">
+                            <span>Generate</span>
+                        </button>
+                    </div>
+                    <div class="output-section">
+                        <div class="output-header">
+                            <h3>Output</h3>
+                            <div>
+                                <button id="copy-text-btn" class="icon-btn" title="Copy">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="text-output" class="output-content">
+                            <p class="placeholder">Output will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Generation Section -->
+                <div class="section">
+                    <div class="input-section">
+                        <h2>Image</h2>
+                        <div class="form-group">
+                            <label for="image-model">Model</label>
+                            <select id="image-model">
+                                <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="image-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
+                            <textarea id="image-prompt" rows="4" placeholder="Type here..."></textarea>
+                        </div>
+                        <button id="generate-image-btn" class="primary-btn">
+                            <span>Generate</span>
+                        </button>
+                    </div>
+                    <div class="output-section">
+                        <div class="output-header">
+                            <h3>Output</h3>
+                        </div>
+                        <div id="image-output" class="output-content image-grid">
+                            <p class="placeholder">Output will appear here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 Synthara AI</p>
+            <p class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <div id="loading-text" class="loading-text">Processing</div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+</body>
+</html>

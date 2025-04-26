@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy</title>
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Synthara AI - Privacy Policy">
+    <meta property="og:description" content="Learn about how Synthara AI protects your privacy and handles your data.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Synthara AI">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Synthara AI - Privacy Policy">
+    <meta name="twitter:description" content="Learn about how Synthara AI protects your privacy and handles your data.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/og-image.svg', _external=True) }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+        .policy-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--border-color);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container page-transition">
+        <header>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo" class="header-logo">
+                <h1>Privacy Policy</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Generator</a>
+                <a href="/resources" class="nav-link">Models</a>
+                <a href="/synthara" class="nav-link">About Synthara AI</a>
+                <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
+                <a href="/api-key" class="nav-link">API Key Setup</a>
+            </div>
+        </header>
+
+        <main>
+            <div class="policy-container">
+                <a href="/" class="back-link">
+                    Back to Generator
+                </a>
+
+                <h2>Privacy Policy</h2>
+
+                <div class="section">
+                    <h3 class="section-title">Introduction</h3>
+                    <p>At Synthara AI, we respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our website and services.</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Information We Collect</h3>
+                    <p>We collect the following types of information:</p>
+
+                    <h4>1. Information You Provide</h4>
+                    <p>When you use our API Key Orchestration Pipeline, you may provide us with:</p>
+                    <ul>
+                        <li>API keys (stored locally in your browser, not on our servers)</li>
+                        <li>Prompts and inputs you enter into our system</li>
+                    </ul>
+
+                    <h4>2. Automatically Collected Information</h4>
+                    <p>We automatically collect certain information when you visit our website:</p>
+                    <ul>
+                        <li>Usage data (pages visited, time spent, etc.)</li>
+                        <li>Device information (browser type, operating system, etc.)</li>
+                        <li>IP address and location data</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">How We Use Cookies</h3>
+                    <p>Cookies are small text files stored on your device that help us improve your experience on our website. We use the following types of cookies:</p>
+
+                    <h4>Essential Cookies</h4>
+                    <p>These cookies are necessary for the website to function properly. They enable core functionality such as security, network management, and account access. You can disable these by changing your browser settings, but this may affect how the website functions.</p>
+
+                    <h4>Analytics Cookies</h4>
+                    <p>These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously. This helps us improve our website and services.</p>
+
+                    <h4>Preference Cookies</h4>
+                    <p>These cookies enable our website to remember information that changes the way the website behaves or looks, such as your preferred language or the region you are in.</p>
+
+                    <h4>Marketing Cookies</h4>
+                    <p>These cookies are used to track visitors across websites. The intention is to display ads that are relevant and engaging for the individual user.</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">How We Use Your Information</h3>
+                    <p>We use your information for the following purposes:</p>
+                    <ul>
+                        <li>To provide and maintain our services</li>
+                        <li>To improve and personalize your experience</li>
+                        <li>To analyze usage patterns and optimize our website</li>
+                        <li>To communicate with you about our services</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Data Security</h3>
+                    <p>We implement appropriate security measures to protect your personal information. Your API keys are stored locally in your browser's storage and are not transmitted to our servers.</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Your Rights</h3>
+                    <p>You have the right to:</p>
+                    <ul>
+                        <li>Access the personal data we hold about you</li>
+                        <li>Request correction of your personal data</li>
+                        <li>Request deletion of your personal data</li>
+                        <li>Object to processing of your personal data</li>
+                        <li>Request restriction of processing your personal data</li>
+                        <li>Request transfer of your personal data</li>
+                        <li>Withdraw consent</li>
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Changes to This Privacy Policy</h3>
+                    <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date.</p>
+                    <p>Last Updated: April 26, 2025</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Contact Us</h3>
+                    <p>If you have any questions about this Privacy Policy, please contact us at:</p>
+                    <p>synthara.company@gmail.com</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 Synthara AI</p>
+            <p class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+</body>
+</html>

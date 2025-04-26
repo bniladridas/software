@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Key Setup</title>
+
+    <!-- Author and Description Meta Tags -->
+    <meta name="author" content="Niladri Das">
+    <meta name="description" content="Set up your Together AI API key to use the advanced Llama-4-Maverick model with Synthara AI.">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Synthara AI - API Key Setup">
+    <meta property="og:description" content="Set up your Together AI API key to use the advanced Llama-4-Maverick model with Synthara AI.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Synthara AI">
+    <meta property="article:author" content="Niladri Das">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Synthara AI - API Key Setup">
+    <meta name="twitter:description" content="Set up your Together AI API key to use the advanced Llama-4-Maverick model with Synthara AI.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/og-image.svg', _external=True) }}">
+    <meta name="twitter:creator" content="@niladridas">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+        .api-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--border-color);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .api-form {
+            margin-top: 2rem;
+            padding: 2rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .api-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-sm);
+        }
+
+        .api-submit {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--text-primary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-size-sm);
+            cursor: pointer;
+        }
+
+        .api-submit:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .model-highlight {
+            font-family: 'Inter', sans-serif;
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-tertiary);
+            border-left: 3px solid var(--text-primary);
+            margin: 1.5rem 0;
+            display: inline-block;
+        }
+
+        .steps {
+            margin: 2rem 0;
+            counter-reset: step-counter;
+        }
+
+        .step {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .step::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1.75rem;
+            height: 1.75rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-sm);
+            color: var(--text-primary);
+        }
+
+        .note {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: var(--bg-tertiary);
+            border-left: 3px solid var(--accent);
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container page-transition">
+        <header>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo" class="header-logo">
+                <h1>API Key Setup</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Generator</a>
+                <a href="/resources" class="nav-link">Models</a>
+                <a href="/synthara" class="nav-link">About Synthara AI</a>
+                <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
+            </div>
+        </header>
+
+        <main>
+            <div class="api-container">
+                <a href="/" class="back-link">
+                    Back to Generator
+                </a>
+
+                <h2>Using Llama-4-Maverick with Your API Key</h2>
+
+                <div class="section">
+                    <p>We humbly request that you use the advanced Llama-4-Maverick model with your own API key. This powerful model offers exceptional capabilities for your AI needs:</p>
+
+                    <div class="model-highlight">
+                        meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
+                    </div>
+
+                    <p>This model represents the cutting edge of AI language technology, offering enhanced reasoning, creativity, and knowledge capabilities.</p>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">How to Set Up Your API Key</h3>
+
+                    <div class="steps">
+                        <div class="step">
+                            <p>Visit the Together AI platform at <a href="https://www.together.ai" target="_blank">together.ai</a> and create an account if you don't already have one.</p>
+                        </div>
+
+                        <div class="step">
+                            <p>Navigate to your account settings and locate the API section.</p>
+                        </div>
+
+                        <div class="step">
+                            <p>Generate a new API key. Make sure to save this key in a secure location as it will only be shown once.</p>
+                        </div>
+
+                        <div class="step">
+                            <p>Enter your API key in the form below to enable the Llama-4-Maverick model in our interface.</p>
+                        </div>
+                    </div>
+
+                    <div class="api-form">
+                        <h4>Enter Your Together AI API Key</h4>
+                        <p>Your API key will be used only for making requests to the Llama-4-Maverick model and will not be stored on our servers.</p>
+                        <form id="apiKeyForm">
+                            <input type="text" id="apiKey" class="api-input" placeholder="Enter your Together AI API key here" required>
+                            <button type="submit" class="api-submit">Save API Key</button>
+                        </form>
+                    </div>
+
+                    <div class="note">
+                        <strong>Note:</strong> Your API key will be stored locally in your browser's storage and will only be used to make requests to the Together AI API. We do not store or transmit your API key to our servers.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h3 class="section-title">Why Use Your Own API Key?</h3>
+
+                    <p>Using your own API key provides several benefits:</p>
+
+                    <ul>
+                        <li>Full control over your usage and billing</li>
+                        <li>Higher rate limits tailored to your needs</li>
+                        <li>Access to the latest model versions as they become available</li>
+                        <li>Enhanced privacy as your requests go directly from your browser to Together AI</li>
+                    </ul>
+
+                    <p>We appreciate your understanding and cooperation in using your own API key for accessing this advanced model.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 Synthara AI</p>
+            <p class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const apiKeyForm = document.getElementById('apiKeyForm');
+            const apiKeyInput = document.getElementById('apiKey');
+
+            // Check if API key exists in localStorage
+            const savedApiKey = localStorage.getItem('togetherApiKey');
+            if (savedApiKey) {
+                apiKeyInput.value = savedApiKey;
+            }
+
+            apiKeyForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const apiKey = apiKeyInput.value.trim();
+                if (apiKey) {
+                    // Save API key to localStorage
+                    localStorage.setItem('togetherApiKey', apiKey);
+
+                    // Show success notification instead of alert
+                    if (window.notificationSystem) {
+                        window.notificationSystem.dismissCurrentNotification();
+                        window.notificationSystem.queueNotification({
+                            id: 'api_key_saved',
+                            message: 'API key saved successfully! You can now use the Llama-4-Maverick model.',
+                            actions: [
+                                { text: 'Go to Generator', primary: true, callback: () => window.location.href = '/' }
+                            ],
+                            persistent: false,
+                            priority: 10
+                        });
+                        window.notificationSystem.processNotificationQueue();
+                    } else {
+                        // Fallback to alert if notification system isn't available
+                        alert('API key saved successfully! You can now use the Llama-4-Maverick model.');
+                        window.location.href = '/';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

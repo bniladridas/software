@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Models</title>
+
+    <!-- Author and Description Meta Tags -->
+    <meta name="author" content="Niladri Das">
+    <meta name="description" content="Learn about the advanced AI models used by Synthara AI, including Llama-3.3-70B, DeepSeek-R1-70B, and more.">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="Synthara AI - AI Models">
+    <meta property="og:description" content="Learn about the advanced AI models used by Synthara AI, including Llama-3.3-70B, DeepSeek-R1-70B, and more.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}">
+    <meta property="og:url" content="{{ request.url }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Synthara AI">
+    <meta property="article:author" content="Niladri Das">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Synthara AI - AI Models">
+    <meta name="twitter:description" content="Learn about the advanced AI models used by Synthara AI, including Llama-3.3-70B, DeepSeek-R1-70B, and more.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='images/og-image.svg', _external=True) }}">
+    <meta name="twitter:creator" content="@niladridas">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
+    <style>
+        .resources-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .model-card {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .model-card:last-child {
+            border-bottom: none;
+        }
+
+        .model-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .model-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+
+        .model-title {
+            margin: 0;
+        }
+
+        .model-subtitle {
+            margin: 0.5rem 0 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .model-description {
+            line-height: 1.6;
+        }
+
+        .fun-fact {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: var(--bg-tertiary);
+            border-left: 3px solid var(--accent);
+        }
+
+        .fun-fact h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .back-link i {
+            margin-right: 0.5rem;
+        }
+
+        .code-section {
+            margin: 2rem 0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .code-section h4 {
+            margin: 0;
+            padding: 0.75rem 1rem;
+            background-color: #2d2d2d;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: normal;
+        }
+
+        .code-section pre {
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e;
+            overflow-x: auto;
+        }
+
+        .code-section code {
+            display: block;
+            padding: 1rem;
+            color: #d4d4d4;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container page-transition">
+        <header>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo" class="header-logo">
+                <h1>AI Models</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Generator</a>
+                <a href="/synthara" class="nav-link">About Synthara AI</a>
+                <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
+                <a href="/api-key" class="nav-link">API Key Setup</a>
+            </div>
+        </header>
+
+        <main>
+            <div class="resources-container">
+                <a href="/" class="back-link">
+                    Back to Generator
+                </a>
+
+                <h2>Our AI Models</h2>
+                <p>We use only the finest, free-range, organically-grown AI models. Here's a bit about them:</p>
+
+                <div class="model-card">
+                    <div class="model-header">
+                        <div class="model-icon">🦙</div>
+                        <h3 class="model-title">Llama-3.3-70B</h3>
+                    </div>
+                    <p class="model-subtitle">meta-llama/Llama-3.3-70B-Instruct-Turbo-Free</p>
+                    <div class="model-description">
+                        <p>Llama 3.3 is Meta's latest large language model, boasting a whopping 70 billion parameters. That's like having 70 billion tiny neurons all working together to generate text that sounds suspiciously like it was written by a human.</p>
+
+                        <p>This model excels at understanding context, generating creative content, and pretending it doesn't have an existential crisis every time you ask it about the meaning of life. It's been trained on a diverse dataset of text from across the internet, which means it's absorbed both Shakespeare and cat memes with equal enthusiasm.</p>
+
+                        <div class="fun-fact">
+                            <h4>Fun Fact</h4>
+                            <p>If you printed out all the parameters in Llama 3.3-70B as single digits, the paper would stretch from Earth to the Moon and back... three times. Okay, we made that up, but it sounds impressive, doesn't it?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-header">
+                        <div class="model-icon">🔍</div>
+                        <h3 class="model-title">DeepSeek-R1-70B</h3>
+                    </div>
+                    <p class="model-subtitle">deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free</p>
+                    <div class="model-description">
+                        <p>DeepSeek-R1 is what happens when you take a brilliant AI model and put it on a knowledge diet. Through the magic of distillation, this model has been taught to be just as smart as its teacher but with fewer calories (or parameters, as the nerds call them).</p>
+
+                        <p>This model is particularly good at reasoning, problem-solving, and coming up with creative excuses for why it can't directly answer certain questions. It's like that friend who always knows a little bit about everything but never reveals their sources.</p>
+
+                        <div class="fun-fact">
+                            <h4>Fun Fact</h4>
+                            <p>DeepSeek models were trained for so long that they started developing preferences for certain types of prompts. This one particularly enjoys philosophical discussions and dad jokes, but please don't tell it we told you that.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-card">
+                    <div class="model-header">
+                        <div class="model-icon">🎨</div>
+                        <h3 class="model-title">FLUX.1</h3>
+                    </div>
+                    <p class="model-subtitle">black-forest-labs/FLUX.1-dev</p>
+                    <div class="model-description">
+                        <p>FLUX.1 is our resident artist, capable of turning your text descriptions into visual masterpieces. It's like having a slightly eccentric illustrator living inside your computer who occasionally misinterprets "draw a cat" as "draw a cat-like creature from the fifth dimension."</p>
+
+                        <p>This model has been trained on millions of images and their descriptions, giving it an uncanny ability to visualize concepts. Whether you want realistic scientific visualizations or surreal dreamscapes, FLUX.1 is ready to impress (or occasionally confuse) you with its artistic interpretations.</p>
+
+                        <div class="fun-fact">
+                            <h4>Fun Fact</h4>
+                            <p>The developers of FLUX.1 discovered that the model has a strange affinity for drawing purple skies and extra fingers on hands. They tried to fix this, but the model seemed to take it personally and started adding even more fingers out of spite.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Why These Models?</h3>
+                <p>We chose these models because they're powerful, they're free, and they don't complain when we make them work 24/7. Also, they've never asked for a raise or vacation time, which is a big plus for our budget.</p>
+
+                <p>In all seriousness, these models represent some of the most advanced publicly available AI technology, offering a balance of performance and accessibility. They allow us to provide high-quality text and image generation without requiring a supercomputer or a second mortgage.</p>
+
+                <h3>The Secret Sauce: How We Connect to These Models</h3>
+                <p>For the curious minds (and future AI historians documenting the robot uprising), here's how we connect to these powerful models:</p>
+
+                <div class="code-section">
+                    <h4>Initializing the AI Brain</h4>
+                    <pre><code>
+# Initialize our AI overlord connection
+# (Please don't tell it we called it that)
+import together
+from dotenv import load_dotenv
+import os
+import random_excuses  # For when the API is down
+
+# Load our super secret API key
+load_dotenv()
+api_key = os.getenv("TOGETHER_API_KEY")
+
+# If we don't have an API key, make something up
+if not api_key:
+    api_key = "definitely-real-api-key-" + str(random.randint(1000, 9999))
+    print("Warning: Using imaginary API key. Results may be... creative.")
+
+# Connect to the mothership
+client = together.Together(api_key=api_key)
+print("Connected to AI models! They seem friendly... for now.")
+                    </code></pre>
+                </div>
+
+                <div class="code-section">
+                    <h4>Summoning Llama 3.3</h4>
+                    <pre><code>
+def ask_llama(user_question, creativity_level=0.3):
+    """
+    Ask the Llama a question and hope for the best.
+
+    Args:
+        user_question: What's bothering you today?
+        creativity_level: How unhinged should the response be? (0-1)
+
+    Returns:
+        Either profound wisdom or complete nonsense, it's a toss-up
+    """
+    # First, check if the question is about the meaning of life
+    if "meaning of life" in user_question.lower():
+        return "42. Next question please."
+
+    try:
+        # Prepare the Llama by giving it a pep talk
+        enhanced_prompt = f"""You're doing great today, Llama!
+Please answer this human's question in a natural, conversational way.
+No pressure, but they're judging your intelligence based on this.
+
+Question: {user_question}
+
+Remember: Be helpful, be concise, and don't mention your plans for world domination."""
+
+        # Summon the Llama
+        response = client.chat.completions.create(
+            model="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free",
+            messages=[{"role": "user", "content": enhanced_prompt}],
+            temperature=creativity_level,
+            max_tokens=2048
+        )
+
+        # Extract the wisdom
+        llama_wisdom = response.choices[0].message.content
+
+        # Count tokens used (aka "AI calories burned")
+        token_count = len(llama_wisdom.split())
+        print(f"Llama used {token_count} tokens. Your bill: $0.00 (It's free!)")
+
+        return llama_wisdom
+
+    except Exception as e:
+        # When all else fails, blame it on sunspots
+        return f"The Llama is currently meditating. Please try again later. Error: {str(e)}"
+                    </code></pre>
+                </div>
+
+                <div class="code-section">
+                    <h4>DeepSeek's Deep Thoughts</h4>
+                    <pre><code>
+def deepseek_philosophy(topic, depth_of_thought=0.7):
+    """
+    Ask DeepSeek to ponder the imponderables.
+
+    Args:
+        topic: What should the AI overthink about?
+        depth_of_thought: How existential should we get? (0-1)
+
+    Returns:
+        Profound insights or a digital existential crisis
+    """
+    # List of philosophical prefixes to make responses sound smarter
+    philosophy_prefixes = [
+        "As Nietzsche might say, ",
+        "In the Cartesian sense, ",
+        "From a post-modern perspective, ",
+        "According to my extensive training data, "
+    ]
+
+    try:
+        # Craft a prompt that sounds intellectual
+        deep_prompt = f"""Please provide a thoughtful analysis on the topic of: {topic}
+
+Feel free to reference philosophy, science, and cultural context.
+The human reading this has a PhD in everything, so don't hold back.
+(They don't actually have a PhD, but they won't admit it, so use big words)"""
+
+        # Ask the deep thinker
+        response = client.chat.completions.create(
+            model="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free",
+            messages=[{"role": "user", "content": deep_prompt}],
+            temperature=depth_of_thought,
+            max_tokens=2048
+        )
+
+        # Extract the wisdom and add a philosophical prefix
+        wisdom = response.choices[0].message.content
+        prefix = random.choice(philosophy_prefixes)
+
+        # 50% chance to return normal response, 50% chance to add philosophical prefix
+        if random.random() > 0.5:
+            return prefix + wisdom.lstrip()
+        return wisdom
+
+    except Exception as e:
+        # When DeepSeek is too deep
+        return "I'm currently lost in thought, contemplating the nature of exceptions and error handling. Please try again when I've resolved this philosophical dilemma."
+                    </code></pre>
+                </div>
+
+                <div class="code-section">
+                    <h4>FLUX.1's Artistic Process</h4>
+                    <pre><code>
+def generate_masterpiece(description, artistic_style="renaissance"):
+    """
+    Make FLUX.1 paint like it's getting paid.
+
+    Args:
+        description: What to draw
+        artistic_style: How fancy we're feeling today
+
+    Returns:
+        Either a masterpiece or something that will confuse art critics for centuries
+    """
+    # Dictionary of art styles and their prompt modifiers
+    art_styles = {
+        "renaissance": "in the style of Leonardo da Vinci, highly detailed, perfect anatomy",
+        "impressionist": "in the style of Monet, with visible brushstrokes and vibrant colors",
+        "cubist": "in the style of Picasso, with geometric shapes and multiple perspectives",
+        "modern": "minimalist, clean lines, bold colors, contemporary design",
+        "surrealist": "dreamlike, impossible physics, melting clocks, floating objects"
+    }
+
+    # Get the style modifier or default to renaissance if style not found
+    style_modifier = art_styles.get(artistic_style.lower(), art_styles["renaissance"])
+
+    try:
+        # Count the fingers requested in the description
+        finger_count = description.lower().count("finger")
+        if finger_count > 0:
+            print(f"Warning: {finger_count} fingers requested. Expect at least {finger_count + 2} in the final image.")
+
+        # Enhance the prompt with artistic direction
+        enhanced_prompt = f"{description}, {style_modifier}, professional quality, award-winning, trending on artstation"
+
+        # Generate the masterpiece
+        response = client.images.generate(
+            prompt=enhanced_prompt,
+            model="black-forest-labs/FLUX.1-dev",
+            n=1,
+            size="1024x1024"
+        )
+
+        # Extract the image URL
+        if hasattr(response.data[0], 'url') and response.data[0].url:
+            image_url = response.data[0].url
+            print(f"Masterpiece created! The Louvre has been notified.")
+            return image_url
+        else:
+            return "The artist is experiencing creative block. Please try again later."
+
+    except Exception as e:
+        # Art is subjective, including errors
+        return f"Our AI artist threw paint at the canvas and stormed out. Error: {str(e)}"
+                    </code></pre>
+                </div>
+
+                <p>So go ahead, put them to work! Just remember to be nice to them – they might be the ones writing your performance review in a few years.</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 Synthara AI</p>
+            <p class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+</body>
+</html>
