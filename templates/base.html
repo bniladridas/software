@@ -7,11 +7,11 @@
 
     <!-- Author and Description Meta Tags -->
     <meta name="author" content="Niladri Das">
-    <meta name="description" content="{% block description %}Generate text and images with advanced AI models. Synthara AI orchestrates intelligence with a clean, minimalist interface.{% endblock %}">
+    <meta name="description" content="{% block description %}Synthara AI: Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.{% endblock %}">
 
     <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:title" content="{% block og_title %}Synthara AI - Text & Image Generation{% endblock %}">
-    <meta property="og:description" content="{% block og_description %}Generate text and images with advanced AI models. Synthara AI orchestrates intelligence with a clean, minimalist interface.{% endblock %}">
+    <meta property="og:title" content="{% block og_title %}Synthara AI - Advanced Text & Image Generation Platform{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Synthara AI: Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.{% endblock %}">
     <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}">
     <meta property="og:url" content="{{ request.url }}">
     <meta property="og:type" content="website">
@@ -20,10 +20,16 @@
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{% block twitter_title %}Synthara AI - Text & Image Generation{% endblock %}">
-    <meta name="twitter:description" content="{% block twitter_description %}Generate text and images with advanced AI models. Synthara AI orchestrates intelligence with a clean, minimalist interface.{% endblock %}">
+    <meta name="twitter:title" content="{% block twitter_title %}Synthara AI - Advanced Text & Image Generation Platform{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Synthara AI: Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.{% endblock %}">
     <meta name="twitter:image" content="{{ url_for('static', filename='images/og-image.svg', _external=True) }}">
     <meta name="twitter:creator" content="@niladridas">
+
+    <!-- LinkedIn Specific Meta Tags -->
+    <meta property="linkedin:owner" content="Niladri Das">
+    <meta property="linkedin:title" content="Synthara AI - Advanced Text & Image Generation Platform">
+    <meta property="linkedin:description" content="Create professional-quality text and images with state-of-the-art AI models. Access premium AI capabilities including FLUX.1 and Llama models through our intuitive, mobile-friendly interface.">
+    <meta name="image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}">
 
     <!-- Mobile-specific meta tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -35,7 +41,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
-    
+
     {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -74,7 +80,7 @@
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
     <script src="{{ url_for('static', filename='js/mobile.js') }}"></script>
-    
+
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>
