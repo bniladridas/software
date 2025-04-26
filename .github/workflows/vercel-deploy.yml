@@ -14,8 +14,27 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel
 
+      - name: Debug Secrets
+        run: |
+          echo "Checking if secrets are available..."
+          echo "VERCEL_TOKEN available: ${{ secrets.VERCEL_TOKEN != '' }}"
+          echo "VERCEL_PROJECT_ID available: ${{ secrets.VERCEL_PROJECT_ID != '' }}"
+          echo "VERCEL_ORG_ID available: ${{ secrets.VERCEL_ORG_ID != '' }}"
+
+          # Check Vercel CLI version
+          echo "Vercel CLI version:"
+          vercel --version
+
       - name: Deploy to Vercel
-        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_ORG_ID }} --confirm
+        run: |
+          echo "Running Vercel deployment with the following arguments:"
+          echo "  --prod: Production deployment"
+          echo "  --token: [REDACTED]"
+          echo "  --scope: ${{ secrets.VERCEL_ORG_ID }}"
+          echo "  --confirm: Skip confirmation prompt"
+          echo "  --project: ${{ secrets.VERCEL_PROJECT_ID }}"
+
+          vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope ${{ secrets.VERCEL_ORG_ID }} --confirm --project ${{ secrets.VERCEL_PROJECT_ID }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
