@@ -39,123 +39,70 @@
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/software-layout.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
 
     {% block extra_head %}{% endblock %}
 </head>
 <body>
-    <div class="app-container page-transition">
-        <header>
-            <div class="logo">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo" class="header-logo">
+    <div class="software-container">
+        <div class="software-header">
+            <div class="software-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo">
                 <h1>{% block header_title %}Synthara AI{% endblock %}</h1>
             </div>
-            <!-- Static hamburger menu button with inline styles for reliability -->
-            <button class="hamburger-menu" aria-label="Toggle navigation menu"
-                    style="display: none; position: absolute; top: 16px; right: 0; z-index: 100; background: none; border: none; cursor: pointer; padding: 8px; width: 44px; height: 44px;">
-                <div class="hamburger-icon" style="display: block; position: relative; width: 24px; height: 18px; margin: 0 auto;">
-                    <span style="display: block; position: absolute; height: 2px; width: 100%; background: #000; border-radius: 2px; opacity: 1; left: 0; top: 0px;"></span>
-                    <span style="display: block; position: absolute; height: 2px; width: 100%; background: #000; border-radius: 2px; opacity: 1; left: 0; top: 8px;"></span>
-                    <span style="display: block; position: absolute; height: 2px; width: 100%; background: #000; border-radius: 2px; opacity: 1; left: 0; top: 16px;"></span>
-                </div>
-            </button>
-            <div class="nav-links">
-                <a href="/" class="nav-link">Home</a>
-                <a href="/resources" class="nav-link">About Our Models</a>
-                <a href="/synthara" class="nav-link">About Synthara AI</a>
-                <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
-                <a href="/api-key" class="nav-link">API Key Setup</a>
+            <div class="software-nav">
+                <a href="/" class="software-nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+                <a href="/resources" class="software-nav-link {% if request.path == '/resources' %}active{% endif %}">Models</a>
+                <a href="/synthara" class="software-nav-link {% if request.path == '/synthara' %}active{% endif %}">About</a>
+                <a href="/deployment-protection" class="software-nav-link {% if request.path == '/deployment-protection' %}active{% endif %}">Protection</a>
+                <a href="/api-key" class="software-nav-link {% if request.path == '/api-key' %}active{% endif %}">API Key</a>
             </div>
-        </header>
+        </div>
 
-        <main>
-            {% block content %}{% endblock %}
-        </main>
+        <div class="software-main">
+            <div class="software-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Generation</div>
+                    <div class="sidebar-item {% if request.path == '/' %}active{% endif %}">Text Generation</div>
+                    <div class="sidebar-item">Image Generation</div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Models</div>
+                    <div class="sidebar-item">Llama-3.3-70B</div>
+                    <div class="sidebar-item">DeepSeek-R1-70B</div>
+                    <div class="sidebar-item">Llama-4-Maverick-17B</div>
+                    <div class="sidebar-item">FLUX.1-dev</div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Settings</div>
+                    <div class="sidebar-item {% if request.path == '/api-key' %}active{% endif %}">API Key Setup</div>
+                    <div class="sidebar-item {% if request.path == '/deployment-protection' %}active{% endif %}">Deployment Protection</div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">About</div>
+                    <div class="sidebar-item {% if request.path == '/synthara' %}active{% endif %}">Synthara AI</div>
+                    <div class="sidebar-item">Documentation</div>
+                </div>
+            </div>
 
-        <footer>
-            <p>© 2025 Synthara AI</p>
-            <p class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></p>
-        </footer>
+            <div class="software-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+
+        <div class="software-footer">
+            <div>© 2025 Synthara AI</div>
+            <div class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></div>
+        </div>
     </div>
 
     <!-- Loading Overlay -->
-    <div id="loading-overlay" class="loading-overlay" style="display: none;">
-        <div class="loading-spinner"></div>
-        <div id="loading-text" class="loading-text">Processing</div>
+    <div class="software-loading" id="loading-overlay" style="display: none;">
+        <div class="software-spinner"></div>
+        <div class="software-loading-text" id="loading-text">Processing</div>
     </div>
-
-    <!-- Inline script for critical mobile functionality -->
-    <script>
-        // Ensure hamburger menu works even if external scripts fail to load
-        function setupMobileMenu() {
-            const hamburgerBtn = document.querySelector('.hamburger-menu');
-            const navLinks = document.querySelector('.nav-links');
-
-            // Check if we're on mobile
-            const isMobile = window.innerWidth <= 768;
-
-            if (hamburgerBtn && navLinks && isMobile) {
-                // Show hamburger menu on mobile
-                hamburgerBtn.style.display = 'block';
-
-                // Set up click handler
-                hamburgerBtn.addEventListener('click', function() {
-                    this.classList.toggle('open');
-
-                    // Toggle navigation menu
-                    if (navLinks.style.display === 'flex') {
-                        navLinks.style.display = 'none';
-                        navLinks.classList.remove('open');
-                    } else {
-                        navLinks.style.display = 'flex';
-                        navLinks.style.flexDirection = 'column';
-                        navLinks.style.position = 'absolute';
-                        navLinks.style.top = '70px';
-                        navLinks.style.left = '0';
-                        navLinks.style.right = '0';
-                        navLinks.style.background = '#ffffff';
-                        navLinks.style.padding = '24px';
-                        navLinks.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-                        navLinks.style.zIndex = '99';
-                        navLinks.style.borderRadius = '2px';
-                        navLinks.style.border = '1px solid rgba(0, 0, 0, 0.05)';
-                        navLinks.classList.add('open');
-                    }
-                });
-
-                // Style nav links for mobile
-                const links = navLinks.querySelectorAll('a');
-                links.forEach(link => {
-                    link.style.padding = '16px 0';
-                    link.style.borderBottom = '1px solid rgba(0, 0, 0, 0.05)';
-                    link.style.width = '100%';
-                    link.style.textAlign = 'center';
-                    link.style.fontSize = '1rem';
-
-                    // Close menu when clicking a link
-                    link.addEventListener('click', function() {
-                        navLinks.style.display = 'none';
-                        hamburgerBtn.classList.remove('open');
-                    });
-                });
-
-                // Remove border from last link
-                if (links.length > 0) {
-                    links[links.length - 1].style.borderBottom = 'none';
-                }
-            }
-        }
-
-        // Run immediately
-        setupMobileMenu();
-
-        // Also run on DOMContentLoaded to ensure everything is loaded
-        document.addEventListener('DOMContentLoaded', setupMobileMenu);
-
-        // Run on resize to handle orientation changes
-        window.addEventListener('resize', setupMobileMenu);
-    </script>
 
     <!-- Core Scripts -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

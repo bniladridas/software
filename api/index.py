@@ -66,7 +66,7 @@ AVAILABLE_TEXT_MODELS = [
 ]
 
 AVAILABLE_IMAGE_MODELS = [
-    {"id": "black-forest-labs/FLUX.1-dev", "name": "FLUX.1-dev"}
+    {"id": "black-forest-labs/FLUX.1-dev", "name": "FLUX.1-dev", "requires_api_key": True}
 ]
 
 # Get API key from environment - try multiple methods with detailed logging
@@ -280,210 +280,165 @@ def index():
         <!-- CSS -->
         <link rel="stylesheet" href="/static/css/styles.css">
         <link rel="stylesheet" href="/static/css/mobile.css">
+        <link rel="stylesheet" href="/static/css/software-layout.css">
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
         <style>
-            /* Critical mobile styles inline */
+            /* Mobile styles - navigation always visible */
             @media (max-width: 768px) {
-                .hamburger-menu {
-                    display: block !important;
-                    position: absolute !important;
-                    top: 16px !important;
-                    right: 0 !important;
-                    z-index: 100 !important;
-                    background: none !important;
-                    border: none !important;
-                    cursor: pointer !important;
-                    padding: 8px !important;
-                    width: 44px !important;
-                    height: 44px !important;
-                }
-
-                .hamburger-icon {
-                    display: block;
-                    position: relative;
-                    width: 24px;
-                    height: 18px;
-                    margin: 0 auto;
-                }
-
-                .hamburger-icon span {
-                    display: block;
-                    position: absolute;
-                    height: 2px;
-                    width: 100%;
-                    background: #000;
-                    border-radius: 2px;
-                    opacity: 1;
-                    left: 0;
-                    transform: rotate(0deg);
-                    transition: .25s ease-in-out;
-                }
-
-                .hamburger-icon span:nth-child(1) {
-                    top: 0px;
-                }
-
-                .hamburger-icon span:nth-child(2) {
-                    top: 8px;
-                }
-
-                .hamburger-icon span:nth-child(3) {
-                    top: 16px;
-                }
-
-                .hamburger-menu.open .hamburger-icon span:nth-child(1) {
-                    top: 8px;
-                    transform: rotate(135deg);
-                }
-
-                .hamburger-menu.open .hamburger-icon span:nth-child(2) {
-                    opacity: 0;
-                    left: -60px;
-                }
-
-                .hamburger-menu.open .hamburger-icon span:nth-child(3) {
-                    top: 8px;
-                    transform: rotate(-135deg);
-                }
-
                 header {
                     position: relative !important;
                     padding-top: 16px !important;
                 }
 
                 .nav-links {
-                    display: none;
+                    display: flex !important;
+                    flex-wrap: wrap;
+                    justify-content: center;
                     width: 100%;
-                }
-
-                .nav-links.open {
-                    display: flex;
-                    flex-direction: column;
-                    position: absolute;
-                    top: 70px;
-                    left: 0;
-                    right: 0;
-                    background: #fff;
-                    padding: 24px;
-                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                    z-index: 99;
-                    border-radius: 2px;
-                    border: 1px solid rgba(0, 0, 0, 0.05);
+                    margin-top: 16px;
                 }
 
                 .nav-link {
-                    padding: 16px 0;
-                    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-                    width: 100%;
+                    padding: 8px 16px;
+                    margin: 4px;
                     text-align: center;
                     font-size: 1rem;
-                }
-
-                .nav-link:last-child {
-                    border-bottom: none;
+                    border-radius: 4px;
+                    background-color: #f5f5f5;
                 }
             }
         </style>
     </head>
     <body>
-        <div class="app-container">
-            <header>
-                <div class="logo">
-                    <img src="/static/images/logo.png" alt="Synthara AI Logo" class="header-logo">
+        <div class="software-container">
+            <div class="software-header">
+                <div class="software-logo">
+                    <img src="/static/images/logo.png" alt="Synthara AI Logo">
                     <h1>AI Generation</h1>
                 </div>
-
-                <!-- Static hamburger menu button with inline styles -->
-                <button class="hamburger-menu" aria-label="Toggle navigation menu">
-                    <div class="hamburger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </button>
-
-                <div class="nav-links">
-                    <a href="/" class="nav-link">Home</a>
-                    <a href="/resources" class="nav-link">About Our Models</a>
-                    <a href="/synthara" class="nav-link">About Synthara AI</a>
-                    <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
-                    <a href="/api-key" class="nav-link">API Key Setup</a>
+                <div class="software-nav">
+                    <a href="/" class="software-nav-link active">Home</a>
+                    <a href="/resources" class="software-nav-link">Models</a>
+                    <a href="/synthara" class="software-nav-link">About</a>
+                    <a href="/deployment-protection" class="software-nav-link">Protection</a>
+                    <a href="/api-key" class="software-nav-link">API Key</a>
                 </div>
-            </header>
+            </div>
 
-            <main>
-                <div class="combined-interface">
-                    <!-- Text Generation Section -->
-                    <div class="section">
-                        <div class="input-section">
-                            <h2>Text</h2>
-                            <div class="form-group">
-                                <label for="text-model">Model</label>
-                                <select id="text-model">
-                                    <option value="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free">Llama-3.3-70B</option>
-                                    <option value="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free">DeepSeek-R1-70B</option>
-                                    <option value="meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8">Llama-4-Maverick-17B (API Key Required)</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="text-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
-                                <textarea id="text-prompt" rows="4" placeholder="Type here..."></textarea>
-                            </div>
-                            <button id="generate-text-btn" class="primary-btn">
-                                <span>Generate</span>
-                            </button>
-                        </div>
-                        <div class="output-section">
-                            <div class="output-header">
-                                <h3>Output</h3>
-                                <div>
-                                    <button id="copy-text-btn" class="icon-btn" title="Copy">
-                                        <i class="fas fa-copy"></i>
-                                    </button>
+            <div class="software-main">
+                <div class="software-sidebar">
+                    <div class="sidebar-section">
+                        <div class="sidebar-section-title">Generation</div>
+                        <div class="sidebar-item active">Text Generation</div>
+                        <div class="sidebar-item">Image Generation</div>
+                    </div>
+                    <div class="sidebar-section">
+                        <div class="sidebar-section-title">Models</div>
+                        <div class="sidebar-item">Llama-3.3-70B</div>
+                        <div class="sidebar-item">DeepSeek-R1-70B</div>
+                        <div class="sidebar-item">Llama-4-Maverick-17B</div>
+                        <div class="sidebar-item">FLUX.1-dev</div>
+                    </div>
+                    <div class="sidebar-section">
+                        <div class="sidebar-section-title">Settings</div>
+                        <div class="sidebar-item">API Key Setup</div>
+                        <div class="sidebar-item">Deployment Protection</div>
+                    </div>
+                    <div class="sidebar-section">
+                        <div class="sidebar-section-title">About</div>
+                        <div class="sidebar-item">Synthara AI</div>
+                        <div class="sidebar-item">Documentation</div>
+                    </div>
+                </div>
+
+                <div class="software-content">
+                    <div class="software-toolbar">
+                        <button class="software-toolbar-button primary">New Generation</button>
+                        <button class="software-toolbar-button">Clear All</button>
+                        <button class="software-toolbar-button">Save Output</button>
+                    </div>
+
+                    <div class="software-combined-interface">
+                        <!-- Text Generation Section -->
+                        <div class="software-section">
+                            <div class="software-section-header">Text Generation</div>
+                            <div class="software-section-content">
+                                <div class="software-form-group">
+                                    <label class="software-form-label" for="text-model">Model</label>
+                                    <select class="software-form-select" id="text-model">
+                                        <option value="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free">Llama-3.3-70B</option>
+                                        <option value="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free">DeepSeek-R1-70B</option>
+                                        <option value="meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8">Llama-4-Maverick-17B (API Key Required)</option>
+                                    </select>
+                                </div>
+                                <div class="software-form-group">
+                                    <label class="software-form-label" for="text-prompt">Prompt <span style="font-size: 12px; color: #666;">(Press Enter to generate)</span></label>
+                                    <textarea class="software-form-textarea" id="text-prompt" placeholder="Type here..."></textarea>
+                                </div>
+                                <div class="software-output">
+                                    <div class="software-output-header">
+                                        <h3 class="software-output-title">Output</h3>
+                                        <button id="copy-text-btn" title="Copy" style="background: none; border: none; cursor: pointer;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <div id="text-output" class="software-output-content">
+                                        <p class="software-placeholder">Output will appear here</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div id="text-output" class="output-content">
-                                <p class="placeholder">Output will appear here</p>
+                            <div class="software-section-footer">
+                                <button id="generate-text-btn" class="software-toolbar-button primary">Generate</button>
+                            </div>
+                        </div>
+
+                        <!-- Image Generation Section -->
+                        <div class="software-section">
+                            <div class="software-section-header">Image Generation</div>
+                            <div class="software-section-content">
+                                <div class="software-form-group">
+                                    <label class="software-form-label" for="image-model">Model</label>
+                                    <select class="software-form-select" id="image-model">
+                                        <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev (API Key Required)</option>
+                                    </select>
+                                </div>
+                                <div class="software-form-group">
+                                    <label class="software-form-label" for="image-prompt">Prompt <span style="font-size: 12px; color: #666;">(Press Enter to generate)</span></label>
+                                    <textarea class="software-form-textarea" id="image-prompt" placeholder="Type here..."></textarea>
+                                </div>
+                                <div class="software-output">
+                                    <div class="software-output-header">
+                                        <h3 class="software-output-title">Output</h3>
+                                    </div>
+                                    <div id="image-output" class="software-output-content">
+                                        <p class="software-placeholder">Output will appear here</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="software-section-footer">
+                                <button id="generate-image-btn" class="software-toolbar-button primary">Generate</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Image Generation Section -->
-                    <div class="section">
-                        <div class="input-section">
-                            <h2>Image</h2>
-                            <div class="form-group">
-                                <label for="image-model">Model</label>
-                                <select id="image-model">
-                                    <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="image-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
-                                <textarea id="image-prompt" rows="4" placeholder="Type here..."></textarea>
-                            </div>
-                            <button id="generate-image-btn" class="primary-btn">
-                                <span>Generate</span>
-                            </button>
-                        </div>
-                        <div class="output-section">
-                            <div class="output-header">
-                                <h3>Output</h3>
-                            </div>
-                            <div id="image-output" class="output-content image-grid">
-                                <p class="placeholder">Output will appear here</p>
-                            </div>
-                        </div>
+                    <div class="software-status-bar">
+                        <div class="software-status-item">Ready</div>
+                        <div class="software-status-item">API Status: Connected</div>
+                        <div class="software-status-item">Models: 4 Available</div>
                     </div>
                 </div>
-            </main>
+            </div>
 
-            <footer>
-                <p>&copy; 2024 Synthara AI. All rights reserved.</p>
-            </footer>
+            <div class="software-footer">
+                <div>© 2025 Synthara AI</div>
+                <div class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></div>
+            </div>
         </div>
 
         <!-- Inline script for critical mobile functionality -->
@@ -661,15 +616,6 @@ def resources():
                     <h1>About Our Models</h1>
                 </div>
 
-                <!-- Static hamburger menu button with inline styles -->
-                <button class="hamburger-menu" aria-label="Toggle navigation menu">
-                    <div class="hamburger-icon">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                </button>
-
                 <div class="nav-links">
                     <a href="/" class="nav-link">Home</a>
                     <a href="/resources" class="nav-link">About Our Models</a>
@@ -705,34 +651,7 @@ def resources():
             </footer>
         </div>
 
-        <!-- Inline script for critical mobile functionality -->
-        <script>
-            // Ensure hamburger menu works even if external scripts fail to load
-            document.addEventListener('DOMContentLoaded', function() {
-                const hamburgerBtn = document.querySelector('.hamburger-menu');
-                const navLinks = document.querySelector('.nav-links');
-
-                if (hamburgerBtn && navLinks) {
-                    hamburgerBtn.addEventListener('click', function() {
-                        this.classList.toggle('open');
-                        navLinks.classList.toggle('open');
-                    });
-                }
-            });
-
-            // Execute immediately as well
-            (function() {
-                const hamburgerBtn = document.querySelector('.hamburger-menu');
-                const navLinks = document.querySelector('.nav-links');
-
-                if (hamburgerBtn && navLinks) {
-                    hamburgerBtn.addEventListener('click', function() {
-                        this.classList.toggle('open');
-                        navLinks.classList.toggle('open');
-                    });
-                }
-            })();
-        </script>
+        <!-- Mobile functionality script removed -->
 
         <!-- Core Scripts -->
         <script src="/static/js/main.js"></script>

@@ -4,8 +4,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Add hamburger menu functionality
-    setupMobileNavigation();
+    // Hamburger menu functionality removed
 
     // Add touch-friendly enhancements
     enhanceTouchInteractions();
@@ -21,64 +20,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * Sets up the mobile navigation menu with hamburger toggle
+ * Mobile navigation menu function removed
+ * Navigation links are now always visible
  */
-function setupMobileNavigation() {
-    // Create hamburger menu button if it doesn't exist
-    if (!document.querySelector('.hamburger-menu')) {
-        const header = document.querySelector('header');
-        const navLinks = document.querySelector('.nav-links');
-
-        // Create hamburger button
-        const hamburgerBtn = document.createElement('button');
-        hamburgerBtn.className = 'hamburger-menu';
-        hamburgerBtn.setAttribute('aria-label', 'Toggle navigation menu');
-        hamburgerBtn.innerHTML = `
-            <div class="hamburger-icon">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        `;
-
-        // Insert hamburger button before nav links
-        header.insertBefore(hamburgerBtn, navLinks);
-
-        // Add click event to toggle menu
-        hamburgerBtn.addEventListener('click', function() {
-            this.classList.toggle('open');
-            navLinks.classList.toggle('open');
-
-            // Update aria-expanded attribute for accessibility
-            const isExpanded = navLinks.classList.contains('open');
-            this.setAttribute('aria-expanded', isExpanded);
-
-            // Prevent body scrolling when menu is open
-            document.body.style.overflow = isExpanded ? 'hidden' : '';
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.closest('.nav-links') &&
-                !event.target.closest('.hamburger-menu') &&
-                navLinks.classList.contains('open')) {
-                hamburgerBtn.classList.remove('open');
-                navLinks.classList.remove('open');
-                document.body.style.overflow = '';
-            }
-        });
-
-        // Close menu when clicking a nav link
-        const links = navLinks.querySelectorAll('a');
-        links.forEach(link => {
-            link.addEventListener('click', function() {
-                hamburgerBtn.classList.remove('open');
-                navLinks.classList.remove('open');
-                document.body.style.overflow = '';
-            });
-        });
-    }
-}
 
 /**
  * Enhances touch interactions for mobile devices

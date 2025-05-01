@@ -7,11 +7,11 @@
 
     <!-- Author and Description Meta Tags -->
     <meta name="author" content="Niladri Das">
-    <meta name="description" content="Set up your Together AI API key to use the advanced Llama-4-Maverick model with Synthara AI.">
+    <meta name="description" content="Set up your Together AI API key to use the advanced Llama-4-Maverick and FLUX.1-dev models with Synthara AI.">
 
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="Synthara AI - API Key Setup">
-    <meta property="og:description" content="Set up your Together AI API key to use the advanced Llama-4-Maverick model with Synthara AI.">
+    <meta property="og:description" content="Set up your Together AI API key to use the advanced Llama-4-Maverick and FLUX.1-dev models with Synthara AI.">
     <meta property="og:image" content="{{ url_for('static', filename='images/og-image.png', _external=True) }}">
     <meta property="og:url" content="{{ request.url }}">
     <meta property="og:type" content="website">
@@ -21,11 +21,13 @@
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Synthara AI - API Key Setup">
-    <meta name="twitter:description" content="Set up your Together AI API key to use the advanced Llama-4-Maverick model with Synthara AI.">
+    <meta name="twitter:description" content="Set up your Together AI API key to use the advanced Llama-4-Maverick and FLUX.1-dev models with Synthara AI.">
     <meta name="twitter:image" content="{{ url_for('static', filename='images/og-image.svg', _external=True) }}">
     <meta name="twitter:creator" content="@niladridas">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/software-layout.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
     <style>
@@ -143,36 +145,69 @@
     </style>
 </head>
 <body>
-    <div class="app-container page-transition">
-        <header>
-            <div class="logo">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo" class="header-logo">
+    <div class="software-container">
+        <div class="software-header">
+            <div class="software-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Synthara AI Logo">
                 <h1>API Key Setup</h1>
             </div>
-            <div class="nav-links">
-                <a href="/" class="nav-link">Generator</a>
-                <a href="/resources" class="nav-link">Models</a>
-                <a href="/synthara" class="nav-link">About Synthara AI</a>
-                <a href="/deployment-protection" class="nav-link">Deployment Protection</a>
+            <div class="software-nav">
+                <a href="/" class="software-nav-link">Home</a>
+                <a href="/resources" class="software-nav-link">Models</a>
+                <a href="/synthara" class="software-nav-link">About</a>
+                <a href="/deployment-protection" class="software-nav-link">Protection</a>
+                <a href="/api-key" class="software-nav-link active">API Key</a>
             </div>
-        </header>
+        </div>
 
-        <main>
-            <div class="api-container">
+        <div class="software-main">
+            <div class="software-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Generation</div>
+                    <div class="sidebar-item">Text Generation</div>
+                    <div class="sidebar-item">Image Generation</div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Models</div>
+                    <div class="sidebar-item">Llama-3.3-70B</div>
+                    <div class="sidebar-item">DeepSeek-R1-70B</div>
+                    <div class="sidebar-item">Llama-4-Maverick-17B</div>
+                    <div class="sidebar-item">FLUX.1-dev</div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">Settings</div>
+                    <div class="sidebar-item active">API Key Setup</div>
+                    <div class="sidebar-item">Deployment Protection</div>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">About</div>
+                    <div class="sidebar-item">Synthara AI</div>
+                    <div class="sidebar-item">Documentation</div>
+                </div>
+            </div>
+
+            <div class="software-content">
+                <div class="api-container">
                 <a href="/" class="back-link">
                     Back to Generator
                 </a>
 
-                <h2>Using Llama-4-Maverick with Your API Key</h2>
+                <h2>Using Premium Models with Your API Key</h2>
 
                 <div class="section">
-                    <p>We humbly request that you use the advanced Llama-4-Maverick model with your own API key. This powerful model offers exceptional capabilities for your AI needs:</p>
+                    <p>We humbly request that you use the following premium models with your own API key. These powerful models offer exceptional capabilities for your AI needs:</p>
 
                     <div class="model-highlight">
                         meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8
                     </div>
 
-                    <p>This model represents the cutting edge of AI language technology, offering enhanced reasoning, creativity, and knowledge capabilities.</p>
+                    <p>This text model represents the cutting edge of AI language technology, offering enhanced reasoning, creativity, and knowledge capabilities.</p>
+
+                    <div class="model-highlight">
+                        black-forest-labs/FLUX.1-dev
+                    </div>
+
+                    <p>This image model delivers stunning, high-quality image generation with exceptional detail and creative interpretation of prompts.</p>
                 </div>
 
                 <div class="section">
@@ -192,13 +227,13 @@
                         </div>
 
                         <div class="step">
-                            <p>Enter your API key in the form below to enable the Llama-4-Maverick model in our interface.</p>
+                            <p>Enter your API key in the form below to enable the Llama-4-Maverick and FLUX.1-dev models in our interface.</p>
                         </div>
                     </div>
 
                     <div class="api-form">
                         <h4>Enter Your Together AI API Key</h4>
-                        <p>Your API key will be used only for making requests to the Llama-4-Maverick model and will not be stored on our servers.</p>
+                        <p>Your API key will be used only for making requests to the Llama-4-Maverick and FLUX.1-dev models and will not be stored on our servers.</p>
                         <form id="apiKeyForm">
                             <input type="text" id="apiKey" class="api-input" placeholder="Enter your Together AI API key here" required>
                             <button type="submit" class="api-submit">Save API Key</button>
@@ -224,13 +259,14 @@
 
                     <p>We appreciate your understanding and cooperation in using your own API key for accessing this advanced model.</p>
                 </div>
+                </div>
             </div>
-        </main>
+        </div>
 
-        <footer>
-            <p>© 2025 Synthara AI</p>
-            <p class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></p>
-        </footer>
+        <div class="software-footer">
+            <div>© 2025 Synthara AI</div>
+            <div class="contact">Contact: <a href="mailto:synthara.company@gmail.com">synthara.company@gmail.com</a></div>
+        </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
@@ -258,7 +294,7 @@
                         window.notificationSystem.dismissCurrentNotification();
                         window.notificationSystem.queueNotification({
                             id: 'api_key_saved',
-                            message: 'API key saved successfully! You can now use the Llama-4-Maverick model.',
+                            message: 'API key saved successfully! You can now use the Llama-4-Maverick and FLUX.1-dev models.',
                             actions: [
                                 { text: 'Go to Generator', primary: true, callback: () => window.location.href = '/' }
                             ],
@@ -268,7 +304,7 @@
                         window.notificationSystem.processNotificationQueue();
                     } else {
                         // Fallback to alert if notification system isn't available
-                        alert('API key saved successfully! You can now use the Llama-4-Maverick model.');
+                        alert('API key saved successfully! You can now use the Llama-4-Maverick and FLUX.1-dev models.');
                         window.location.href = '/';
                     }
                 }

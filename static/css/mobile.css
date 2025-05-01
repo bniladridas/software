@@ -294,12 +294,7 @@
     }
 }
 
-/* Add mobile-friendly hamburger menu */
-.hamburger-menu {
-    display: none;
-}
-
-/* !important ensures this rule takes precedence */
+/* Mobile navigation styles - always visible */
 @media (max-width: 768px) {
     /* Improved header positioning for mobile */
     header {
@@ -307,136 +302,21 @@
         padding-top: var(--spacing-sm) !important;
     }
 
-    .hamburger-menu {
-        display: block !important;
-        position: absolute !important;
-        top: var(--spacing-sm) !important;
-        right: 0 !important;
-        z-index: 100 !important;
-        background: none !important;
-        border: none !important;
-        cursor: pointer !important;
-        padding: var(--spacing-xs) !important;
-        width: 44px !important; /* Larger touch target */
-        height: 44px !important; /* Larger touch target */
-    }
-
-    .hamburger-icon {
-        display: block;
-        position: relative;
-        width: 24px;
-        height: 18px;
-        margin: 0 auto;
-    }
-
-    .hamburger-icon span {
-        display: block;
-        position: absolute;
-        height: 2px;
-        width: 100%;
-        background: var(--text-primary);
-        border-radius: 2px;
-        opacity: 1;
-        left: 0;
-        transform: rotate(0deg);
-        transition: .25s ease-in-out;
-    }
-
-    .hamburger-icon span:nth-child(1) {
-        top: 0px;
-    }
-
-    .hamburger-icon span:nth-child(2) {
-        top: 8px;
-    }
-
-    .hamburger-icon span:nth-child(3) {
-        top: 16px;
-    }
-
-    .hamburger-menu.open .hamburger-icon span:nth-child(1),
-    .hamburger-menu:active .hamburger-icon span:nth-child(1) {
-        top: 8px;
-        transform: rotate(135deg);
-    }
-
-    .hamburger-menu.open .hamburger-icon span:nth-child(2),
-    .hamburger-menu:active .hamburger-icon span:nth-child(2) {
-        opacity: 0;
-        left: -60px;
-    }
-
-    .hamburger-menu.open .hamburger-icon span:nth-child(3),
-    .hamburger-menu:active .hamburger-icon span:nth-child(3) {
-        top: 8px;
-        transform: rotate(-135deg);
-    }
-
     .nav-links {
-        display: none;
+        display: flex !important;
+        flex-wrap: wrap;
+        justify-content: center;
         width: 100%;
-    }
-
-    .nav-links.open {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 70px; /* Adjusted to account for header height */
-        left: 0;
-        right: 0;
-        background: var(--bg-primary);
-        padding: var(--spacing-md);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 99;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--border-color);
-    }
-
-    /* Fallback for when JavaScript doesn't load properly */
-    .hamburger-menu:focus + .nav-links,
-    .hamburger-menu:active + .nav-links {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        right: 0;
-        background: var(--bg-primary);
-        padding: var(--spacing-md);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        z-index: 99;
-        border-radius: var(--radius-sm);
-        border: 1px solid var(--border-color);
+        margin-top: var(--spacing-md);
     }
 
     .nav-link {
-        padding: var(--spacing-sm) 0;
-        border-bottom: 1px solid var(--border-color);
-        width: 100%;
+        padding: var(--spacing-sm) var(--spacing-md);
+        margin: var(--spacing-xs);
         text-align: center;
         font-size: var(--font-size-md); /* Larger text for better touch */
-    }
-
-    .nav-link:last-child {
-        border-bottom: none;
-    }
-
-    /* Add animation for menu */
-    .nav-links.open,
-    .hamburger-menu:focus + .nav-links,
-    .hamburger-menu:active + .nav-links {
-        animation: slideDown 0.3s ease-out forwards;
-    }
-
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        border-radius: var(--radius-sm);
+        background-color: var(--bg-secondary);
     }
 }
 

@@ -1,0 +1,444 @@
+/* 
+ * Software-like Layout CSS
+ * This stylesheet creates a fixed-width, consistent layout that resembles a desktop application
+ */
+
+:root {
+  /* Software-specific variables */
+  --software-width: 1024px;
+  --software-height: 768px;
+  --header-height: 60px;
+  --footer-height: 40px;
+  --main-height: calc(var(--software-height) - var(--header-height) - var(--footer-height));
+  --sidebar-width: 200px;
+  --content-width: calc(var(--software-width) - var(--sidebar-width));
+  
+  /* Software-like colors */
+  --software-bg: #f5f5f5;
+  --software-header-bg: #ffffff;
+  --software-content-bg: #ffffff;
+  --software-sidebar-bg: #f0f0f0;
+  --software-border: #e0e0e0;
+  --software-accent: #007bff;
+  --software-text: #333333;
+  --software-text-light: #666666;
+}
+
+/* Reset body and html to ensure full height */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #e0e0e0; /* Background outside the app */
+}
+
+/* Software container - fixed dimensions */
+.software-container {
+  width: var(--software-width);
+  height: var(--software-height);
+  margin: 20px auto;
+  background-color: var(--software-bg);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--software-border);
+}
+
+/* Software header */
+.software-header {
+  height: var(--header-height);
+  background-color: var(--software-header-bg);
+  border-bottom: 1px solid var(--software-border);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  justify-content: space-between;
+}
+
+.software-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.software-logo img {
+  height: 32px;
+  width: auto;
+}
+
+.software-logo h1 {
+  font-size: 18px;
+  margin: 0;
+  color: var(--software-text);
+}
+
+.software-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.software-nav-link {
+  padding: 8px 12px;
+  text-decoration: none;
+  color: var(--software-text);
+  font-size: 14px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.software-nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.software-nav-link.active {
+  background-color: var(--software-accent);
+  color: white;
+}
+
+/* Main content area with sidebar */
+.software-main {
+  display: flex;
+  height: var(--main-height);
+  overflow: hidden;
+}
+
+.software-sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--software-sidebar-bg);
+  border-right: 1px solid var(--software-border);
+  padding: 16px 0;
+  overflow-y: auto;
+}
+
+.sidebar-item {
+  padding: 10px 16px;
+  font-size: 14px;
+  color: var(--software-text);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.sidebar-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-item.active {
+  background-color: rgba(0, 123, 255, 0.1);
+  border-left: 3px solid var(--software-accent);
+  padding-left: 13px; /* Adjust for the border */
+}
+
+.sidebar-section {
+  margin-bottom: 16px;
+}
+
+.sidebar-section-title {
+  padding: 8px 16px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--software-text-light);
+  font-weight: bold;
+}
+
+/* Content area */
+.software-content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background-color: var(--software-content-bg);
+}
+
+/* Software footer */
+.software-footer {
+  height: var(--footer-height);
+  background-color: var(--software-header-bg);
+  border-top: 1px solid var(--software-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-size: 12px;
+  color: var(--software-text-light);
+}
+
+/* Toolbar for content area */
+.software-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--software-border);
+}
+
+.software-toolbar-button {
+  padding: 6px 12px;
+  background-color: #f8f8f8;
+  border: 1px solid var(--software-border);
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.software-toolbar-button:hover {
+  background-color: #e8e8e8;
+}
+
+.software-toolbar-button.primary {
+  background-color: var(--software-accent);
+  color: white;
+  border-color: var(--software-accent);
+}
+
+.software-toolbar-button.primary:hover {
+  background-color: #0069d9;
+}
+
+/* Card components for content */
+.software-card {
+  background-color: white;
+  border: 1px solid var(--software-border);
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.software-card-title {
+  font-size: 16px;
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: var(--software-text);
+}
+
+/* Form elements */
+.software-form-group {
+  margin-bottom: 16px;
+}
+
+.software-form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--software-text);
+}
+
+.software-form-input,
+.software-form-select,
+.software-form-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid var(--software-border);
+  border-radius: 4px;
+  background-color: white;
+}
+
+.software-form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Output area */
+.software-output {
+  background-color: #f8f8f8;
+  border: 1px solid var(--software-border);
+  border-radius: 4px;
+  padding: 16px;
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.software-output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.software-output-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.software-output-content {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Loading overlay */
+.software-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.software-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: var(--software-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.software-loading-text {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--software-text);
+}
+
+/* Responsive adjustments - maintain software-like appearance */
+@media (max-width: 1100px) {
+  :root {
+    --software-width: 90vw;
+    --software-height: 90vh;
+  }
+  
+  .software-container {
+    margin: 5vh auto;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 0px; /* Hide sidebar on mobile */
+  }
+  
+  .software-main {
+    flex-direction: column;
+  }
+  
+  .software-sidebar {
+    display: none; /* Hide sidebar on mobile */
+  }
+  
+  .software-header {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  
+  .software-nav {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .software-logo {
+    margin-bottom: 10px;
+  }
+}
+
+/* Combined interface layout for text and image generation */
+.software-combined-interface {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .software-combined-interface {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Text and image generation sections */
+.software-section {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border: 1px solid var(--software-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.software-section-header {
+  padding: 12px 16px;
+  background-color: #f8f8f8;
+  border-bottom: 1px solid var(--software-border);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.software-section-content {
+  padding: 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.software-section-footer {
+  padding: 12px 16px;
+  background-color: #f8f8f8;
+  border-top: 1px solid var(--software-border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* Image output specific styles */
+.software-image-output {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.software-image-item {
+  border: 1px solid var(--software-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.software-image-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Status bar */
+.software-status-bar {
+  height: 24px;
+  background-color: #f0f0f0;
+  border-top: 1px solid var(--software-border);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 12px;
+  color: var(--software-text-light);
+}
+
+.software-status-item {
+  margin-right: 16px;
+}
+
+/* Placeholder text */
+.software-placeholder {
+  color: var(--software-text-light);
+  font-style: italic;
+  text-align: center;
+  padding: 20px;
+}

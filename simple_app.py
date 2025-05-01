@@ -22,7 +22,7 @@ AVAILABLE_TEXT_MODELS = [
 ]
 
 AVAILABLE_IMAGE_MODELS = [
-    {"id": "black-forest-labs/FLUX.1-dev", "name": "FLUX.1-dev"}
+    {"id": "black-forest-labs/FLUX.1-dev", "name": "FLUX.1-dev", "requires_api_key": True}
 ]
 
 # Initialize Together client
@@ -169,25 +169,40 @@ def generate_image():
     model = data.get('model', 'black-forest-labs/FLUX.1-dev')
     n = data.get('n', 1)
     size = data.get('size', '1024x1024')
+    api_key = data.get('apiKey', None)
 
     logger.info(f"Generating image with prompt: {prompt}")
     logger.info(f"Model: {model}, N: {n}, Size: {size}")
 
     try:
-        # Check if client is initialized
-        if client is None:
-            return jsonify({
-                'success': False,
-                'error': "API key not configured. Please set the TOGETHER_API_KEY environment variable."
-            }), 500
+        # If using FLUX.1-dev with custom API key
+        if model == "black-forest-labs/FLUX.1-dev" and api_key:
+            logger.info("Using custom API key for FLUX.1-dev model")
+            # Create a custom client with the user's API key
+            custom_client = Together(api_key=api_key)
 
-        logger.debug("Calling Together API for image generation")
-        response = client.images.generate(
-            prompt=prompt,
-            model=model,
-            n=n,
-            size=size
-        )
+            logger.debug("Calling Together API for image generation with custom API key")
+            response = custom_client.images.generate(
+                prompt=prompt,
+                model=model,
+                n=n,
+                size=size
+            )
+        else:
+            # Check if default client is initialized
+            if client is None:
+                return jsonify({
+                    'success': False,
+                    'error': "API key not configured. Please set the TOGETHER_API_KEY environment variable."
+                }), 500
+
+            logger.debug("Calling Together API for image generation with default API key")
+            response = client.images.generate(
+                prompt=prompt,
+                model=model,
+                n=n,
+                size=size
+            )
 
         # Process the response
         images = []

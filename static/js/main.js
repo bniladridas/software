@@ -47,10 +47,22 @@ document.addEventListener('DOMContentLoaded', function() {
     function showLoading(message = 'Processing') {
         loadingText.textContent = message;
         loadingOverlay.style.display = 'flex';
+
+        // Update status bar if it exists
+        const statusItem = document.querySelector('.software-status-item:first-child');
+        if (statusItem) {
+            statusItem.textContent = message;
+        }
     }
 
     function hideLoading() {
         loadingOverlay.style.display = 'none';
+
+        // Update status bar if it exists
+        const statusItem = document.querySelector('.software-status-item:first-child');
+        if (statusItem) {
+            statusItem.textContent = 'Ready';
+        }
     }
 
     // Text Generation
@@ -116,12 +128,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Copy Text
     copyTextBtn.addEventListener('click', () => {
         const text = textOutput.innerText;
-        if (text && !text.includes('Generated text will appear here')) {
+        if (text && !text.includes('Output will appear here')) {
             navigator.clipboard.writeText(text)
                 .then(() => {
                     // Show copied notification
                     const originalIcon = copyTextBtn.innerHTML;
-                    copyTextBtn.innerHTML = '<i class="fas fa-check"></i>';
+                    copyTextBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
                     setTimeout(() => {
                         copyTextBtn.innerHTML = originalIcon;
                     }, 2000);
@@ -140,19 +152,37 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
+        // Check if using FLUX.1-dev model and if API key is needed
+        if (imageModel.value === "black-forest-labs/FLUX.1-dev") {
+            const apiKey = localStorage.getItem('togetherApiKey');
+            if (!apiKey) {
+                alert('To use the FLUX.1-dev model, you need to set up your API key. Redirecting to API key setup page...');
+                window.location.href = '/api-key';
+                return;
+            }
+        }
+
         showLoading('Generating image...');
 
         try {
+            // Prepare request body
+            const requestBody = {
+                prompt: prompt,
+                model: imageModel.value,
+                n: parseInt(imageCount ? imageCount.value : 1)
+            };
+
+            // Add API key if using FLUX.1-dev
+            if (imageModel.value === "black-forest-labs/FLUX.1-dev") {
+                requestBody.apiKey = localStorage.getItem('togetherApiKey');
+            }
+
             const response = await fetch('/api/generate-image', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    prompt: prompt,
-                    model: imageModel.value,
-                    n: parseInt(imageCount ? imageCount.value : 1)
-                })
+                body: JSON.stringify(requestBody)
             });
 
             const data = await response.json();
@@ -191,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper Functions
     function createImageItem(imageSrc, index, isBase64) {
         const imageItem = document.createElement('div');
-        imageItem.className = 'image-item';
+        imageItem.className = 'software-image-item';
 
         const img = document.createElement('img');
         img.src = imageSrc;
@@ -202,7 +232,17 @@ document.addEventListener('DOMContentLoaded', function() {
             img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2VlZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiM5OTkiPkltYWdlIGxvYWQgZXJyb3I8L3RleHQ+PC9zdmc+';
         };
 
+        // Add download button
+        const downloadBtn = document.createElement('button');
+        downloadBtn.className = 'software-toolbar-button';
+        downloadBtn.innerHTML = 'Download';
+        downloadBtn.style.margin = '8px 0';
+        downloadBtn.addEventListener('click', () => {
+            downloadImage(imageSrc, `synthara-image-${index + 1}.png`);
+        });
+
         imageItem.appendChild(img);
+        imageItem.appendChild(downloadBtn);
         imageOutput.appendChild(imageItem);
     }
 

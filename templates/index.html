@@ -5,68 +5,81 @@
 {% block header_title %}AI Generation{% endblock %}
 
 {% block content %}
-            <div class="combined-interface">
-                <!-- Text Generation Section -->
-                <div class="section">
-                    <div class="input-section">
-                        <h2>Text</h2>
-                        <div class="form-group">
-                            <label for="text-model">Model</label>
-                            <select id="text-model">
-                                <option value="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free">Llama-3.3-70B</option>
-                                <option value="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free">DeepSeek-R1-70B</option>
-                                <option value="meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8">Llama-4-Maverick-17B (API Key Required)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="text-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
-                            <textarea id="text-prompt" rows="4" placeholder="Type here..."></textarea>
-                        </div>
-                        <button id="generate-text-btn" class="primary-btn">
-                            <span>Generate</span>
-                        </button>
-                    </div>
-                    <div class="output-section">
-                        <div class="output-header">
-                            <h3>Output</h3>
-                            <div>
-                                <button id="copy-text-btn" class="icon-btn" title="Copy">
-                                    <i class="fas fa-copy"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div id="text-output" class="output-content">
-                            <p class="placeholder">Output will appear here</p>
-                        </div>
-                    </div>
-                </div>
+<div class="software-toolbar">
+    <button class="software-toolbar-button primary">New Generation</button>
+    <button class="software-toolbar-button">Clear All</button>
+    <button class="software-toolbar-button">Save Output</button>
+</div>
 
-                <!-- Image Generation Section -->
-                <div class="section">
-                    <div class="input-section">
-                        <h2>Image</h2>
-                        <div class="form-group">
-                            <label for="image-model">Model</label>
-                            <select id="image-model">
-                                <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="image-prompt">Prompt <span class="hint">(Press Enter to generate)</span></label>
-                            <textarea id="image-prompt" rows="4" placeholder="Type here..."></textarea>
-                        </div>
-                        <button id="generate-image-btn" class="primary-btn">
-                            <span>Generate</span>
-                        </button>
-                    </div>
-                    <div class="output-section">
-                        <div class="output-header">
-                            <h3>Output</h3>
-                        </div>
-                        <div id="image-output" class="output-content image-grid">
-                            <p class="placeholder">Output will appear here</p>
-                        </div>
-                    </div>
+<div class="software-combined-interface">
+    <!-- Text Generation Section -->
+    <div class="software-section">
+        <div class="software-section-header">Text Generation</div>
+        <div class="software-section-content">
+            <div class="software-form-group">
+                <label class="software-form-label" for="text-model">Model</label>
+                <select class="software-form-select" id="text-model">
+                    <option value="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free">Llama-3.3-70B</option>
+                    <option value="deepseek-ai/DeepSeek-R1-Distill-Llama-70B-free">DeepSeek-R1-70B</option>
+                    <option value="meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8">Llama-4-Maverick-17B (API Key Required)</option>
+                </select>
+            </div>
+            <div class="software-form-group">
+                <label class="software-form-label" for="text-prompt">Prompt <span style="font-size: 12px; color: #666;">(Press Enter to generate)</span></label>
+                <textarea class="software-form-textarea" id="text-prompt" placeholder="Type here..."></textarea>
+            </div>
+            <div class="software-output">
+                <div class="software-output-header">
+                    <h3 class="software-output-title">Output</h3>
+                    <button id="copy-text-btn" title="Copy" style="background: none; border: none; cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="text-output" class="software-output-content">
+                    <p class="software-placeholder">Output will appear here</p>
                 </div>
             </div>
+        </div>
+        <div class="software-section-footer">
+            <button id="generate-text-btn" class="software-toolbar-button primary">Generate</button>
+        </div>
+    </div>
+
+    <!-- Image Generation Section -->
+    <div class="software-section">
+        <div class="software-section-header">Image Generation</div>
+        <div class="software-section-content">
+            <div class="software-form-group">
+                <label class="software-form-label" for="image-model">Model</label>
+                <select class="software-form-select" id="image-model">
+                    <option value="black-forest-labs/FLUX.1-dev">FLUX.1-dev (API Key Required)</option>
+                </select>
+            </div>
+            <div class="software-form-group">
+                <label class="software-form-label" for="image-prompt">Prompt <span style="font-size: 12px; color: #666;">(Press Enter to generate)</span></label>
+                <textarea class="software-form-textarea" id="image-prompt" placeholder="Type here..."></textarea>
+            </div>
+            <div class="software-output">
+                <div class="software-output-header">
+                    <h3 class="software-output-title">Output</h3>
+                </div>
+                <div id="image-output" class="software-output-content">
+                    <p class="software-placeholder">Output will appear here</p>
+                </div>
+            </div>
+        </div>
+        <div class="software-section-footer">
+            <button id="generate-image-btn" class="software-toolbar-button primary">Generate</button>
+        </div>
+    </div>
+</div>
+
+<div class="software-status-bar">
+    <div class="software-status-item">Ready</div>
+    <div class="software-status-item">API Status: Connected</div>
+    <div class="software-status-item">Models: 4 Available</div>
+</div>
 {% endblock %}
