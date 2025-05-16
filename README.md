@@ -1,6 +1,7 @@
-
 # Synthara AI  
 **Create with intelligence.**  
+
+> **Note**: If you see an error, it may mean your Together AI API credit has run out. Check your API key or visit [Together AI](https://www.together.ai) to manage your account.  
 
 [![Synthara AI](https://img.shields.io/badge/Synthara_AI-7C3AED.svg?style=for-the-badge&color=white&labelColor=white)](https://github.com/bniladridas/synthara-ai) [![Python](https://img.shields.io/badge/python-3.9+-blue.svg?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org) [![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/) [![Together AI](https://img.shields.io/badge/Together_AI-API-6366f1.svg?style=for-the-badge)](https://www.together.ai) [![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com) [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg?style=for-the-badge)](https://opensource.org/licenses/Apache-2.0)  
 
